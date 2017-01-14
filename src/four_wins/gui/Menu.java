@@ -25,7 +25,7 @@ public class Menu extends JFrame implements ActionListener {
     // Constructor:
     public Menu(String title) {
         super(title);
-        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Component Attributes
         ng.setToolTipText("Start a new Game");

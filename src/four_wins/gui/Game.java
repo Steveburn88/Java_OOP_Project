@@ -37,12 +37,14 @@ public class Game extends JFrame implements ActionListener {
         // Components -> Container -> main window
         buttonbox.add(ng);
         buttonbox.add(sg);
+        buttonbox.add(quit);
         content.add(label, BorderLayout.SOUTH);
         content.add(buttonbox, BorderLayout.NORTH);
         //content.add(field, BorderLayout.CENTER);
         // Event handling
         ng.addActionListener(this);
-        //addWindowListener(new NewGame());
+        sg.addActionListener(this);
+        quit.addActionListener(this);
         // display main window
         pack();
         setVisible(true);
@@ -52,9 +54,20 @@ public class Game extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO:
-        // clear Field
-        // set Coins to Start value
+        Object source = e.getSource();
+        if (source == ng) {
+            // TODO:
+            // clear Field
+            // set Coins to Start value
+        }
+        if (source == sg) {
+            // TODO: implement serialization for saving purpose
+        }
+        if (source == quit) {
+            dispose();
+            Menu main = new Menu("Hauptmenü");
+        }
+
     }
 
 
