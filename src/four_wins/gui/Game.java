@@ -1,4 +1,6 @@
-package four_wins;
+package four_wins.gui;
+
+import four_wins.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,16 +10,19 @@ import java.awt.event.ActionListener;
 /**
  * Created by stefan on 14.01.17.
  */
-public class Gui extends JFrame implements ActionListener {
+
+public class Game extends JFrame implements ActionListener {
     // Components
     JButton ng = new JButton("New Game");
-    JButton lg = new JButton("Load");
+    JButton sg = new JButton("Save");
+    JButton quit = new JButton("Exit to Menu");
     JLabel label = new JLabel();
     JPanel buttonbox;
 
     // Constructor:
-    public Gui(String title) {
+    public Game(String title) {
         super(title);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Player p1 = new Player("stefan", 21);
         Player p2 = new Player("tiana", 21);
         // Component Attributes
@@ -31,7 +36,7 @@ public class Gui extends JFrame implements ActionListener {
         buttonbox.setLayout(new FlowLayout());
         // Components -> Container -> main window
         buttonbox.add(ng);
-        buttonbox.add(lg);
+        buttonbox.add(sg);
         content.add(label, BorderLayout.SOUTH);
         content.add(buttonbox, BorderLayout.NORTH);
         //content.add(field, BorderLayout.CENTER);
