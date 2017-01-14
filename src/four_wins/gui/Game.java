@@ -46,7 +46,9 @@ public class Game extends JFrame implements ActionListener {
         sg.addActionListener(this);
         quit.addActionListener(this);
         // display main window
-        pack();
+        //pack();
+        setSize(640, 480);
+        setLocation(100, 50);
         setVisible(true);
     }
 
