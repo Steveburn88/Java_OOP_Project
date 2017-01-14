@@ -4,8 +4,10 @@ package four_wins;
  * Created by stefan on 14.01.17.
  */
 public class Field {
-    int row;
-    int column;
+    final int column = 7;
+    final int row = 6;
+    // Boolean representation of the field. True means empty, false means occupied.
+    boolean[][] field = new boolean[column][row];
 
     public int getRow() {
         return row;
@@ -15,8 +17,11 @@ public class Field {
         return column;
     }
 
-    public boolean isEmpty() {
-        // TODO: implement method
-        return true;
+    public Field() {
+        
+    }
+
+    public boolean isEmpty(int c, int r) {
+        return field[c][r];
     }
 }
