@@ -6,8 +6,11 @@ package four_wins;
 public class Field {
     final int column = 7;
     final int row = 6;
-    // Boolean representation of the field. True means empty, false means occupied.
-    boolean[][] field = new boolean[column][row];
+    /*
+    * Integer representation of the field.
+    * 0 means empty, 1 and 2 are dedicated to the according player.
+     */
+    int[][] field = new int[column][row];
 
     public int getRow() {
         return row;
@@ -18,10 +21,15 @@ public class Field {
     }
 
     public Field() {
-        
+
     }
 
     public boolean isEmpty(int c, int r) {
-        return field[c][r];
+        if (field[c][r] == 0) return true;
+        else return false;
+    }
+
+    public void setCoin(int c, int r, int p) {
+        field[c][r] = p;
     }
 }
