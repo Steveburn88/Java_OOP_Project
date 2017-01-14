@@ -1,5 +1,7 @@
 package four_wins.gui;
 
+import four_wins.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -92,14 +94,14 @@ public class Menu extends JFrame implements ActionListener {
         Object source = e.getSource();
         if (source == ng) {
             this.dispose();
-            Game screen = new Game("Four Wins");
+            Player p1 = new Player(txtUser1.getText(), 21);
+            Player p2 = new Player(txtUser2.getText(), 21);
+            Game screen = new Game("Four Wins", p1, p2);
         }
         if (source == lg) {
             User1.setText("lulz");
             User2.setText("asdf");
         }
-        // TODO:
-        // clear Field
-        // set Coins to Start value
+
     }
 }

@@ -20,11 +20,11 @@ public class Game extends JFrame implements ActionListener {
     JPanel buttonbox;
 
     // Constructor:
-    public Game(String title) {
+    public Game(String title, Player p1, Player p2) {
         super(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Player p1 = new Player("stefan", 21);
-        Player p2 = new Player("tiana", 21);
+        //Player p1 = new Player("stefan", 21);
+        //Player p2 = new Player("tiana", 21);
         // Component Attributes
         ng.setToolTipText("Start a new Game");
         label.setText(p1.getName()+": "+p1.getCoins()+"coins,   "+p2.getName()+": "+p2.getCoins()+"coins");
