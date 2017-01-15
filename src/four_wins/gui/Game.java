@@ -85,6 +85,7 @@ public class Game extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
+        //System.out.println(source.toString());
         if (source == ng) {
             // set Coins to Start value
             dispose();
@@ -99,10 +100,16 @@ public class Game extends JFrame implements ActionListener {
             dispose();
             Menu main = new Menu("Hauptmenü");
         }
-        if (source == buttons) {
-            System.out.println("foo");
+        for (row = 0; row < rowTiles; row++) {
+            for (col = 0; col < colTiles; col++) {
+                if (source == buttons[row][col]) {
+                    colSelected = col;
+                    rowSelected = row;
+                    System.out.println("col: "+col);
+                    System.out.println("row: "+row);
+                }
+            }
         }
-
     }
 
 
