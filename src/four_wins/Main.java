@@ -9,8 +9,8 @@ import four_wins.gui.Menu;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("just a test");
         Menu main = new Menu("Hauptmenü");
+        //System.out.println(System.getProperty("user.dir"));
         //Game screen = new Game("Four Wins");
     }
 }

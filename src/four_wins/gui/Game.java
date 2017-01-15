@@ -14,15 +14,18 @@ import java.awt.event.ActionListener;
 
 public class Game extends JFrame implements ActionListener {
     // Components
+    Player p1, p2;
     JButton ng = new JButton("New Game");
     JButton sg = new JButton("Save");
     JButton quit = new JButton("Exit to Menu");
     JLabel label = new JLabel();
     JPanel buttonbox;
     JPanel gamePanel;
+    final ImageIcon g1 = new ImageIcon(System.getProperty("user.dir")+"/graphics/star_blue.png");
+    final ImageIcon g2 = new ImageIcon(System.getProperty("user.dir")+"/graphics/star_green.png");
     int pTurn = 0;
     Field field = new Field();
-    int row, col = 0;
+    int row, col, rowSelected, colSelected = 0;
     int rowTiles = field.getRow();
     int colTiles = field.getColumn();
     JButton[][] buttons = new JButton[rowTiles][colTiles];
@@ -31,6 +34,8 @@ public class Game extends JFrame implements ActionListener {
     // Constructor:
     public Game(String title, Player p1, Player p2) {
         super(title);
+        this.p1 = p1;
+        this.p2 = p2;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gamePanel = new JPanel();
         gamePanel.setLayout(myGrid);
@@ -62,7 +67,6 @@ public class Game extends JFrame implements ActionListener {
         content.add(label, BorderLayout.SOUTH);
         content.add(gamePanel, BorderLayout.CENTER);
         content.add(buttonbox, BorderLayout.NORTH);
-        //content.add(field, BorderLayout.CENTER);
 
         // Event handling
         ng.addActionListener(this);
@@ -82,9 +86,11 @@ public class Game extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == ng) {
-            // TODO:
-            // clear Field
             // set Coins to Start value
+            dispose();
+            p1.setCoins(21);
+            p2.setCoins(21);
+            Game screen = new Game("Four Wins", p1, p2);
         }
         if (source == sg) {
             // TODO: implement serialization for saving purpose
@@ -93,8 +99,12 @@ public class Game extends JFrame implements ActionListener {
             dispose();
             Menu main = new Menu("Hauptmenü");
         }
+        if (source == buttons) {
+            System.out.println("foo");
+        }
 
     }
 
 
 }
+
