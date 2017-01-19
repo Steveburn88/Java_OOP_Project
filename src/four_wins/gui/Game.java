@@ -42,7 +42,8 @@ public class Game extends JFrame implements ActionListener {
 
         // Component Attributes
         ng.setToolTipText("Start a new Game");
-        label.setText(p1.getName()+": "+p1.getCoins()+"coins,   "+p2.getName()+": "+p2.getCoins()+"coins");
+        label.setText("<html>"+p1.getName()+": "+p1.getCoins()+"coins<br>"+p2.getName()+": "+p2.getCoins()+"coins</html>");
+
 
         // Containers
         buttonbox = new JPanel();
@@ -64,7 +65,7 @@ public class Game extends JFrame implements ActionListener {
                 gamePanel.add(buttons[row][col]);
             }
         }
-        content.add(label, BorderLayout.SOUTH);
+        content.add(label, BorderLayout.EAST);
         content.add(gamePanel, BorderLayout.CENTER);
         content.add(buttonbox, BorderLayout.NORTH);
 
@@ -103,10 +104,23 @@ public class Game extends JFrame implements ActionListener {
         for (row = 0; row < rowTiles; row++) {
             for (col = 0; col < colTiles; col++) {
                 if (source == buttons[row][col]) {
+                    // Reduce coin of current Player
+                    if (pTurn % 2 == 0) {
+                        int n = p1.getCoins();
+                        p1.setCoins(n-1);
+                        label.setText("<html>"+p1.getName()+": "+p1.getCoins()+"coins<br>"+p2.getName()+": "+p2.getCoins()+"coins</html>");
+                    }
+                    else if (pTurn % 2 == 1) {
+                        int n = p2.getCoins();
+                        p2.setCoins(n-1);
+                        label.setText("<html>"+p1.getName()+": "+p1.getCoins()+"coins<br>"+p2.getName()+": "+p2.getCoins()+"coins</html>");
+                    }
+                    // just a test from here:
                     colSelected = col;
                     rowSelected = row;
                     System.out.println("col: "+col);
                     System.out.println("row: "+row);
+                    pTurn += 1;
                 }
             }
         }
