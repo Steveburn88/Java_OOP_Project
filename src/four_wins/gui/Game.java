@@ -42,7 +42,9 @@ public class Game extends JFrame implements ActionListener {
 
         // Component Attributes
         ng.setToolTipText("Start a new Game");
-        label.setText("<html>"+p1.getName()+": "+p1.getCoins()+"coins<br>"+p2.getName()+": "+p2.getCoins()+"coins</html>");
+        label.setText("<html>"+p1.getName()+": "+p1.getCoins()+"coins<br>"
+                +p2.getName()+": "+p2.getCoins()+"coins<br><br>"
+                +"Turn: "+p1.getName()+"</html>");
 
 
         // Containers
@@ -65,7 +67,7 @@ public class Game extends JFrame implements ActionListener {
                 gamePanel.add(buttons[row][col]);
             }
         }
-        content.add(label, BorderLayout.EAST);
+        content.add(label, BorderLayout.SOUTH);
         content.add(gamePanel, BorderLayout.CENTER);
         content.add(buttonbox, BorderLayout.NORTH);
 
@@ -76,7 +78,7 @@ public class Game extends JFrame implements ActionListener {
 
         // display main window
         pack();
-        setSize(640, 480);
+        setSize(800, 600);
         setLocation(100, 50);
         setVisible(true);
     }
@@ -106,14 +108,24 @@ public class Game extends JFrame implements ActionListener {
                 if (source == buttons[row][col]) {
                     // Reduce coin of current Player
                     if (pTurn % 2 == 0) {
+                        // fill button
+                        buttons[row][col].setIcon(g1);
+                        // adjust coin
                         int n = p1.getCoins();
                         p1.setCoins(n-1);
-                        label.setText("<html>"+p1.getName()+": "+p1.getCoins()+"coins<br>"+p2.getName()+": "+p2.getCoins()+"coins</html>");
+                        label.setText("<html>"+p1.getName()+": "+p1.getCoins()+"coins<br>"
+                                +p2.getName()+": "+p2.getCoins()+"coins<br><br>"
+                                +"Turn: "+p2.getName()+"</html>");
                     }
                     else if (pTurn % 2 == 1) {
+                        // fill button
+                        buttons[row][col].setIcon(g2);
+                        // adjust coins
                         int n = p2.getCoins();
                         p2.setCoins(n-1);
-                        label.setText("<html>"+p1.getName()+": "+p1.getCoins()+"coins<br>"+p2.getName()+": "+p2.getCoins()+"coins</html>");
+                        label.setText("<html>"+p1.getName()+": "+p1.getCoins()+"coins<br>"
+                                +p2.getName()+": "+p2.getCoins()+"coins<br><br>"
+                                +"Turn: "+p1.getName()+"</html>");
                     }
                     // just a test from here:
                     colSelected = col;

@@ -21,12 +21,27 @@ public class Field {
     }
 
     public Field() {
+        for (int c=0; c<column; c++) {
+            for (int r=0; r<row; r++) {
+                field[c][r] = 0;
+            }
+        }
 
     }
 
     public boolean isEmpty(int c, int r) {
         if (field[c][r] == 0) return true;
         else return false;
+    }
+
+    public int getLowestRow(int c) {
+        int lowestRow=0;
+        for (int r = row-1; r>=0; r--) {
+            if (isEmpty(c, r)) {
+                lowestRow = r;
+            }
+        }
+        return lowestRow;
     }
 
     public void setCoin(int c, int r, int p) {
