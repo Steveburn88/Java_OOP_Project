@@ -1,6 +1,7 @@
 package four_wins.gui;
 
 import four_wins.Player;
+import four_wins.exceptions.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -84,24 +85,65 @@ public class Menu extends JFrame implements ActionListener {
 
         // display main window
         //pack();
-        setSize(220, 160);
-        setLocation(50, 50);
+        setSize(300, 180);
+        setLocation(200, 100);
         setVisible(true);
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == ng) {
-            this.dispose();
-            Player p1 = new Player(txtUser1.getText(), 21);
-            Player p2 = new Player(txtUser2.getText(), 21);
-            Game screen = new Game("Four Wins", p1, p2);
+            String playerOneName=txtUser1.getText();
+            String playerTwoName=txtUser2.getText();
+            try{
+            	String allowedCharactersRegex="[A-ÄÖÜ][A-ÄÖÜa-äöüß -]+";
+            	if(!playerOneName.matches(allowedCharactersRegex)||!playerTwoName.matches(allowedCharactersRegex)){
+            		throw new PlayerNameException("Players name may only contain letters, "
+            				+ "hyphens (-) and blanks and begins with a capital letter.");
+            	}
+            	if(!isCapitalLetterAfterSpace(playerOneName)||!isCapitalLetterAfterSpace(playerTwoName)){
+            		throw new PlayerNameException("After a blank or a hyphen a capital "
+            				+ "letter is required.");
+            	}
+            	this.dispose();
+            	Player p1 = new Player(txtUser1.getText(), 21);
+                Player p2 = new Player(txtUser2.getText(), 21);
+                Game screen = new Game("Four Wins", p1, p2);
+            }	
+            catch(PlayerNameException ex){
+            	JOptionPane.showMessageDialog(mainPanel, ex.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
         if (source == lg) {
             User1.setText("lulz");
             User2.setText("asdf");
         }
 
+    }
+    
+    /**
+     * This method is used to check if a capital letter is placed after blank space or hyphen.
+     * If it is, it returns true value and if it is not, it returns false value.
+     * @author Tiana Dabovic
+     * @param playerName Player name which user inputed
+     * @return boolean Method returns boolean value true if capital letter is after all
+     * blank spaces and hyphens or false if is not
+    */
+    
+    public boolean isCapitalLetterAfterSpace(String playerName){
+    	boolean isCapital=true;
+    	for(int i=0;i<playerName.length()-1;i++){
+    		char currentChar=playerName.charAt(i);
+    		char nextChar=playerName.charAt(i+1);
+    		if((currentChar==' '||currentChar=='-')&&!Character.isUpperCase(nextChar)){
+    			isCapital=false;
+    			break;
+    		}
+    	}
+    	if(playerName.charAt(playerName.length()-1)==' '||playerName.charAt(playerName.length()-1)=='-'){
+    		isCapital=false;
+    	}
+    	return isCapital;
     }
 }
