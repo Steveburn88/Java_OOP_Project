@@ -86,7 +86,6 @@ public class Menu extends JFrame implements ActionListener {
         lg.addActionListener(this);
 
 
-
         // display main window
         //pack();
         setSize(300, 180);
@@ -138,8 +137,6 @@ public class Menu extends JFrame implements ActionListener {
                 System.err.println(cnfe.toString());
             }
 
-            //User1.setText("lulz");
-            //User2.setText("asdf");
         }
 
     }

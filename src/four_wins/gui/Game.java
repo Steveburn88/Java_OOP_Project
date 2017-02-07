@@ -210,7 +210,6 @@ public class Game extends JFrame implements ActionListener, Serializable {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        //System.out.println(source.toString());
         if (source == ng) {
             // set Coins to Start value
             dispose();
