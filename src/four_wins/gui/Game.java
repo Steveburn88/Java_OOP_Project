@@ -1,7 +1,7 @@
 package four_wins.gui;
 
 import four_wins.Field;
-import four_wins.Player;
+import globals.Player;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -36,7 +36,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
     final ImageIcon g2 = new ImageIcon(System.getProperty("user.dir")+"/graphics/star_green.png");
     int pTurn = 0;
     Field field = new Field();
-    int row, col, rowSelected, colSelected;
+    int row, col;
     int rowTiles = field.getRow();
     int colTiles = field.getColumn();
     JButton[][] buttons = new JButton[rowTiles][colTiles];
@@ -118,31 +118,17 @@ public class Game extends JFrame implements ActionListener, Serializable {
         this(title, p1, p2, pTurn, null);
     }
 
-    /**
-    * This method is used to check if column is already full. It checks if there is a coin
-    * inserted in first row. If it is, it means that column is full and there is no more space
-    * for new coins. Returns true if it is full or false if not.
-    * @author Tiana Dabovic
-    * @param colNum Number of column which is checked for fullness.
-    * @return boolean Method returns true if column is full or false if is not
-    */
-
-    public boolean isColumnFull(int colNum){
-        if(!field.isEmpty(colNum, 0)) return true;
-        return false;
-    }
 
     /**
     * This method is used to check if number of column in which player wants to insert coin is in
     * range of possible values. Possible values are from 0 to number of field columns minus 1.
     * Returns true if inputed number is in allowed range, else returns false
-    * @author Tiana Dabovic
+    * @author Tiana Dabovic, Stefan Schneider
     * @param colNum Number of column which is checked for range.
     * @return boolean Returns true if inputed number is in allowed range, else returns false
     */
-
     public boolean isInputInColumnRange(int colNum){
-        if(colNum>=0&&colNum<field.getColumn()) return true;
+        if(colNum>=0&&colNum<colTiles) return true;
         return false;
     }
 
@@ -153,9 +139,8 @@ public class Game extends JFrame implements ActionListener, Serializable {
     * @author Tiana Dabovic
     * @param colNum Number of column that is clicked.
     * @param playerNum Number of player whose turn is.
-    * @param ImageIcon Icon of coin that has to be set on appropriate button where coin is inserted.
+    * @param img Icon of coin that has to be set on appropriate button where coin is inserted.
     */
-
     public void findWhereToInsertCoin(int colNum, int playerNum, ImageIcon img){
         for(int rowNum=field.getRow()-1;rowNum>=0;rowNum--){
             if(field.isEmpty(colNum, rowNum)){
@@ -175,9 +160,8 @@ public class Game extends JFrame implements ActionListener, Serializable {
     * This method uses inputed map to get rows and columns which have to be marked. It sets border
     * of red color on buttons that make winning combination.
     * @author Tiana Dabovic
-    * @param HashMap<String,Object> Map that contains numbers of rows and columns of win combin.
+    * @param scoring Map that contains numbers of rows and columns of win combin.
     */
-
     public void markWinningStreak(HashMap<String,Object> scoring){
         buttons[(int) scoring.get("row1")][(int) scoring.get("col1")].setBorder(new LineBorder(Color.RED, 5));
         buttons[(int) scoring.get("row2")][(int) scoring.get("col2")].setBorder(new LineBorder(Color.RED, 5));
@@ -189,19 +173,18 @@ public class Game extends JFrame implements ActionListener, Serializable {
     * This method is used to disable all buttons when game is finished.
     * @author Tiana Dabovic
     */
-
     public void disableButtons(){
         for(int colNum=0;colNum<field.getColumn();colNum++){
             buttons[0][colNum].setEnabled(false);
         }
-            insertBtn.setEnabled(false);
+        insertBtn.setEnabled(false);
+        sg.setEnabled(false);
     }
    
     /**
     * This method is used to display winners name in south region of frame.
     * @author Tiana Dabovic
     */
-
     public void setFinishNote(){
         finishNote.setHorizontalAlignment(SwingConstants.CENTER);
         content.add(finishNote, BorderLayout.SOUTH);
@@ -219,7 +202,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
         else if (source == sg) {
             try {
-                ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("Game.save"));
+                ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("FourWins.save"));
                 os.writeObject(p1);
                 os.writeObject(p2);
                 os.writeInt(pTurn);
@@ -238,7 +221,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
             String colNumberInput= (String) JOptionPane.showInputDialog(gamePanel, "Please enter the number of column where you want to put your coin.",  "Coin input", JOptionPane.INFORMATION_MESSAGE);
             try{
                 int colNumber= Integer.parseInt(colNumberInput)-1;
-                if(isInputInColumnRange(colNumber)&&!isColumnFull(colNumber)){
+                if(isInputInColumnRange(colNumber)&&!field.isColumnFull(colNumber)){
                     insertCoin(colNumber);
                 }
                 else{
@@ -253,7 +236,6 @@ public class Game extends JFrame implements ActionListener, Serializable {
         else for (row = 0; row < rowTiles; row++) {
             for (col = 0; col < colTiles; col++) {
                 if (source == buttons[row][col]) {
-                    // Reduce coin of current Player
                     insertCoin(col);
                 }
             }
@@ -265,12 +247,10 @@ public class Game extends JFrame implements ActionListener, Serializable {
     * and sets appropriate coin image. It also checks for winning combination and if one is found
     * game is finished. At the end player turn counter is increased by one, so the next player will
     * get his turn when next input is made.
-    * @author Tiana Dabovic
+    * @author Tiana Dabovic, Stefan Schneider
     * @param col Number of column that is clicked or passed by input dialog.
     */
-    
     public void insertCoin(int col){
-        // Reduce coin of current Player
         if (pTurn % 2 == 0) {
             findWhereToInsertCoin(col, 1, g1);
             int n = p1.getCoins();
@@ -309,4 +289,3 @@ public class Game extends JFrame implements ActionListener, Serializable {
     }
 
 }
-

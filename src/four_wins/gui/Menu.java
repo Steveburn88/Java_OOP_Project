@@ -1,8 +1,8 @@
 package four_wins.gui;
 
 import four_wins.Field;
-import four_wins.Player;
-import four_wins.exceptions.*;
+import globals.Player;
+import exceptions.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -121,7 +121,7 @@ public class Menu extends JFrame implements ActionListener {
         }
         if (source == lg) {
             try {
-                ObjectInputStream is = new ObjectInputStream(new FileInputStream("Game.save"));
+                ObjectInputStream is = new ObjectInputStream(new FileInputStream("FourWins.save"));
                 Player p1 = (Player)is.readObject();
                 Player p2 = (Player)is.readObject();
                 int pTurn = is.readInt();

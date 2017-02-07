@@ -13,7 +13,7 @@ public class Field implements Serializable {
      * Integer representation of the field.
      * 0 means empty, 1 and 2 are dedicated to the according player.
      */
-    int[][] field = new int[column][row];
+	int[][] field = new int[column][row];
 
     public int getRow() {
         return row;
@@ -31,6 +31,19 @@ public class Field implements Serializable {
         if (field[c][r] == 0) return true;
         else return false;
     }
+
+	/**
+	 * This method is used to check if column is already full. It checks if there is a coin
+	 * inserted in first row. If it is, it means that column is full and there is no more space
+	 * for new coins. Returns true if it is full or false if not.
+	 * @author Tiana Dabovic
+	 * @param colNum Number of column which is checked for fullness.
+	 * @return boolean Method returns true if column is full or false if is not
+	 */
+	public boolean isColumnFull(int colNum){
+		if(!isEmpty(colNum, 0)) return true;
+		else return false;
+	}
 
     public void setCoin(int c, int r, int p) {
         field[c][r] = p;

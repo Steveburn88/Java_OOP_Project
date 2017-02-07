@@ -1,4 +1,4 @@
-package four_wins;
+package globals;
 
 import java.io.Serializable;
 
@@ -23,7 +23,6 @@ public class Player implements Serializable {
     }
 
     public String getName() {
-
         return name;
     }
 

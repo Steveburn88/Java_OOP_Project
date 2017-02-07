@@ -1,5 +1,3 @@
-package four_wins;
-
 import four_wins.gui.Menu;
 
 /**

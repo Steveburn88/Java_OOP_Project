@@ -1,4 +1,4 @@
-package four_wins.exceptions;
+package exceptions;
 
 /**
  * Created by stefan on 07.02.17.
