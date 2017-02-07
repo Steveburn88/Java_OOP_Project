@@ -1,9 +1,11 @@
 package four_wins;
 
+import java.io.Serializable;
+
 /**
  * Created by stefan on 14.01.17.
  */
-public class Player {
+public class Player implements Serializable {
     String name;
     int coins;
 

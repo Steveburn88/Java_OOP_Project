@@ -10,13 +10,17 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * Created by stefan on 14.01.17.
  */
 
-public class Game extends JFrame implements ActionListener {
+public class Game extends JFrame implements ActionListener, Serializable {
     // Components
     Player p1, p2;
     JButton ng = new JButton("New Game");
@@ -32,18 +36,22 @@ public class Game extends JFrame implements ActionListener {
     final ImageIcon g2 = new ImageIcon(System.getProperty("user.dir")+"/graphics/star_green.png");
     int pTurn = 0;
     Field field = new Field();
-    int row, col, rowSelected, colSelected = 0;
+    int row, col, rowSelected, colSelected;
     int rowTiles = field.getRow();
     int colTiles = field.getColumn();
     JButton[][] buttons = new JButton[rowTiles][colTiles];
     GridLayout myGrid = new GridLayout(rowTiles, colTiles);
     Container content=new Container();
 
-    // Constructor:
-    public Game(String title, Player p1, Player p2) {
+    // Constructor with buttons:
+    public Game(String title, Player p1, Player p2, int pTurn, JButton[][] btns) {
         super(title);
+        this.pTurn = pTurn;
         this.p1 = p1;
         this.p2 = p2;
+        if (btns!=null) {
+            buttons = btns;
+        }
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gamePanel = new JPanel();
         gamePanel.setLayout(myGrid);
@@ -51,7 +59,8 @@ public class Game extends JFrame implements ActionListener {
         // Component Attributes
         ng.setToolTipText("Start a new Game");
         coinsStatus.setText("<html>"+p1.getName()+": "+p1.getCoins()+"coins<br>"+p2.getName()+": "+p2.getCoins()+"coins</html>");
-        turn.setText("Current Turn: "+p1.getName());
+        if (pTurn % 2 == 0) turn.setText("Current Turn: "+p1.getName());
+        if (pTurn % 2 == 1) turn.setText("Current Turn: "+p2.getName());
 
         // Containers
         buttonbox = new JPanel();
@@ -67,15 +76,18 @@ public class Game extends JFrame implements ActionListener {
         buttonbox.add(quit);
         for (row = 0; row < rowTiles; row++) {
             for (col = 0; col < colTiles; col++) {
-                buttons[row][col] = new JButton();
-                buttons[row][col].setBackground(Color.WHITE);
-                buttons[row][col].addActionListener(this);
-                if(row!=0){
-                	buttons[row][col].setEnabled(false);
+                if (btns==null) {
+                    buttons[row][col] = new JButton();
+                    buttons[row][col].setBackground(Color.WHITE);
+                    buttons[row][col].addActionListener(this);
+                    if(row!=0){
+                        buttons[row][col].setEnabled(false);
+                    }
                 }
                 gamePanel.add(buttons[row][col]);
             }
         }
+
         JPanel pan=new JPanel();
         pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
         pan.setBorder(new TitledBorder("Coins"));
@@ -99,6 +111,11 @@ public class Game extends JFrame implements ActionListener {
         setSize(720, 576);
         setLocation(100, 50);
         setVisible(true);
+    }
+
+    // Constructor for a new game:
+    public Game(String title, Player p1, Player p2, int pTurn) {
+        this(title, p1, p2, pTurn, null);
     }
 
     /**
@@ -199,14 +216,24 @@ public class Game extends JFrame implements ActionListener {
             dispose();
             p1.setCoins(21);
             p2.setCoins(21);
-            Game screen = new Game("Four Wins", p1, p2);
+            Game screen = new Game("Four Wins", p1, p2, 0);
         }
         else if (source == sg) {
-            // TODO: implement serialization for saving purpose
+            try {
+                ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("Game.save"));
+                os.writeObject(p1);
+                os.writeObject(p2);
+                os.writeInt(pTurn);
+                os.writeObject(field);
+                os.writeObject(buttons);
+                os.close();
+            } catch (IOException io) {
+                System.out.println(io.toString());
+            }
         }
         else if (source == quit) {
             dispose();
-            Menu main = new Menu("Hauptmen�");
+            Menu main = new Menu("Hauptmenü");
         }
         else if (source == insertBtn) {
             String colNumberInput= (String) JOptionPane.showInputDialog(gamePanel, "Please enter the number of column where you want to put your coin.",  "Coin input", JOptionPane.INFORMATION_MESSAGE);

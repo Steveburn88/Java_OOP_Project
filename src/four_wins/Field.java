@@ -1,16 +1,17 @@
 package four_wins;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * Created by stefan on 14.01.17.
  */
-public class Field {
+public class Field implements Serializable {
     final int column = 7;
     final int row = 6;
-    /*
-    * Integer representation of the field.
-    * 0 means empty, 1 and 2 are dedicated to the according player.
+    /**
+     * Integer representation of the field.
+     * 0 means empty, 1 and 2 are dedicated to the according player.
      */
     int[][] field = new int[column][row];
 

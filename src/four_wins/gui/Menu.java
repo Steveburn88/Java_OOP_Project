@@ -1,5 +1,6 @@
 package four_wins.gui;
 
+import four_wins.Field;
 import four_wins.Player;
 import four_wins.exceptions.*;
 
@@ -7,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 /**
  * Created by stefan on 14.01.17.
@@ -109,15 +113,33 @@ public class Menu extends JFrame implements ActionListener {
             	this.dispose();
             	Player p1 = new Player(txtUser1.getText(), 21);
                 Player p2 = new Player(txtUser2.getText(), 21);
-                Game screen = new Game("Four Wins", p1, p2);
+                int pTurn = 0;
+                Game screen = new Game("Four Wins", p1, p2, pTurn);
             }	
             catch(PlayerNameException ex){
             	JOptionPane.showMessageDialog(mainPanel, ex.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
             }
         }
         if (source == lg) {
-            User1.setText("lulz");
-            User2.setText("asdf");
+            try {
+                ObjectInputStream is = new ObjectInputStream(new FileInputStream("Game.save"));
+                Player p1 = (Player)is.readObject();
+                Player p2 = (Player)is.readObject();
+                int pTurn = is.readInt();
+                Field field = (Field)is.readObject();
+                JButton[][] buttons = (JButton[][])is.readObject();
+                Game loaded = new Game("Four Wins", p1, p2, pTurn, buttons);
+                loaded.field = field;
+                int rowTiles = field.getRow();
+                int colTiles = field.getColumn();
+            } catch (IOException io) {
+                System.err.println(io.toString());
+            } catch (ClassNotFoundException cnfe) {
+                System.err.println(cnfe.toString());
+            }
+
+            //User1.setText("lulz");
+            //User2.setText("asdf");
         }
 
     }
