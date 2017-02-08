@@ -1,4 +1,4 @@
-import four_wins.gui.Menu;
+import globals.Menu;
 
 /**
  * Created by stefan on 14.01.17.

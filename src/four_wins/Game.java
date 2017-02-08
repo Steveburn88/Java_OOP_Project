@@ -1,7 +1,7 @@
-package four_wins.gui;
+package four_wins;
 
-import four_wins.Field;
-import globals.Player;
+import globals.*;
+import globals.Menu;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -35,7 +35,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
     final ImageIcon g1 = new ImageIcon(System.getProperty("user.dir")+"/graphics/star_blue.png");
     final ImageIcon g2 = new ImageIcon(System.getProperty("user.dir")+"/graphics/star_green.png");
     int pTurn = 0;
-    Field field = new Field();
+    public Field field = new Field();
     int row, col;
     int rowTiles = field.getRow();
     int colTiles = field.getColumn();

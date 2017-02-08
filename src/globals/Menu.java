@@ -1,8 +1,8 @@
-package four_wins.gui;
+package globals;
 
+import exceptions.PlayerNameException;
 import four_wins.Field;
-import globals.Player;
-import exceptions.*;
+import four_wins.Game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,8 +23,12 @@ public class Menu extends JFrame implements ActionListener {
     JTextField txtUser2 = new JTextField("");
     JButton ng = new JButton("New Game");
     JButton lg = new JButton("Load");
+    JRadioButton fourWinsRBtn = new JRadioButton("Four Wins", true);
+    JRadioButton fiveWinsRBtn = new JRadioButton("Five Wins", false);
+    JRadioButton gobangRBtn = new JRadioButton("Gobang", false);
     JLabel label = new JLabel();
     JPanel mainPanel;
+    JPanel radioPanel;
     JPanel buttonPanel;
 
     // Constructor:
@@ -40,6 +44,7 @@ public class Menu extends JFrame implements ActionListener {
 
         // Containers
         mainPanel = new JPanel();
+        radioPanel = new JPanel();
         buttonPanel = new JPanel();
         Container content = getContentPane();
 
@@ -63,6 +68,15 @@ public class Menu extends JFrame implements ActionListener {
         * Buttonbereich des JFrame einstellen
          */
 
+        // BoxLayout für das radioPanel einstellen
+        radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.LINE_AXIS));
+
+        // Buttons hinzufügen
+        radioPanel.add(fourWinsRBtn);
+        radioPanel.add(fiveWinsRBtn);
+        radioPanel.add(gobangRBtn);
+
+
         //BoxLayout für das buttonPanel einstellen
         buttonPanel.setLayout(
                 new BoxLayout(
@@ -78,7 +92,8 @@ public class Menu extends JFrame implements ActionListener {
         buttonPanel.add(lg);
 
         // Hinzufügen der JPanel zum BorderLayout
-        content.add(mainPanel);
+        content.add(mainPanel, BorderLayout.NORTH);
+        content.add(radioPanel, BorderLayout.CENTER);
         content.add(buttonPanel, BorderLayout.SOUTH);
 
         // Event handling
@@ -92,7 +107,7 @@ public class Menu extends JFrame implements ActionListener {
         setLocation(200, 100);
         setVisible(true);
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -100,23 +115,23 @@ public class Menu extends JFrame implements ActionListener {
             String playerOneName=txtUser1.getText();
             String playerTwoName=txtUser2.getText();
             try{
-            	String allowedCharactersRegex="[A-ÄÖÜ][A-ÄÖÜa-äöüß -]+";
-            	if(!playerOneName.matches(allowedCharactersRegex)||!playerTwoName.matches(allowedCharactersRegex)){
-            		throw new PlayerNameException("Players name may only contain letters, "
-            				+ "hyphens (-) and blanks and begins with a capital letter.");
-            	}
-            	if(!isCapitalLetterAfterSpace(playerOneName)||!isCapitalLetterAfterSpace(playerTwoName)){
-            		throw new PlayerNameException("After a blank or a hyphen a capital "
-            				+ "letter is required.");
-            	}
-            	this.dispose();
-            	Player p1 = new Player(txtUser1.getText(), 21);
+                String allowedCharactersRegex="[A-ÄÖÜ][A-ÄÖÜa-äöüß -]+";
+                if(!playerOneName.matches(allowedCharactersRegex)||!playerTwoName.matches(allowedCharactersRegex)){
+                    throw new PlayerNameException("Players name may only contain letters, "
+                            + "hyphens (-) and blanks and begins with a capital letter.");
+                }
+                if(!isCapitalLetterAfterSpace(playerOneName)||!isCapitalLetterAfterSpace(playerTwoName)){
+                    throw new PlayerNameException("After a blank or a hyphen a capital "
+                            + "letter is required.");
+                }
+                this.dispose();
+                Player p1 = new Player(txtUser1.getText(), 21);
                 Player p2 = new Player(txtUser2.getText(), 21);
                 int pTurn = 0;
                 Game screen = new Game("Four Wins", p1, p2, pTurn);
-            }	
+            }
             catch(PlayerNameException ex){
-            	JOptionPane.showMessageDialog(mainPanel, ex.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(mainPanel, ex.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
             }
         }
         if (source == lg) {
@@ -140,7 +155,7 @@ public class Menu extends JFrame implements ActionListener {
         }
 
     }
-    
+
     /**
      * This method is used to check if a capital letter is placed after blank space or hyphen.
      * If it is, it returns true value and if it is not, it returns false value.
@@ -148,21 +163,21 @@ public class Menu extends JFrame implements ActionListener {
      * @param playerName Player name which user inputed
      * @return boolean Method returns boolean value true if capital letter is after all
      * blank spaces and hyphens or false if is not
-    */
-    
+     */
+
     public boolean isCapitalLetterAfterSpace(String playerName){
-    	boolean isCapital=true;
-    	for(int i=0;i<playerName.length()-1;i++){
-    		char currentChar=playerName.charAt(i);
-    		char nextChar=playerName.charAt(i+1);
-    		if((currentChar==' '||currentChar=='-')&&!Character.isUpperCase(nextChar)){
-    			isCapital=false;
-    			break;
-    		}
-    	}
-    	if(playerName.charAt(playerName.length()-1)==' '||playerName.charAt(playerName.length()-1)=='-'){
-    		isCapital=false;
-    	}
-    	return isCapital;
+        boolean isCapital=true;
+        for(int i=0;i<playerName.length()-1;i++){
+            char currentChar=playerName.charAt(i);
+            char nextChar=playerName.charAt(i+1);
+            if((currentChar==' '||currentChar=='-')&&!Character.isUpperCase(nextChar)){
+                isCapital=false;
+                break;
+            }
+        }
+        if(playerName.charAt(playerName.length()-1)==' '||playerName.charAt(playerName.length()-1)=='-'){
+            isCapital=false;
+        }
+        return isCapital;
     }
 }
