@@ -71,6 +71,7 @@ public class Field implements Serializable {
 
         // horizontel check to right
         else if (colSelected<column-3 && field[colSelected+3][rowSelected]==p && field[colSelected+2][rowSelected]==q && field[colSelected+1][rowSelected]==q) {
+            System.out.println("SHOULD NOT APPEAR");
             result.put("row1", rowSelected);
             result.put("row2", rowSelected);
             result.put("col1", colSelected+2);
@@ -86,7 +87,7 @@ public class Field implements Serializable {
         }
 
         // vertical check down
-        else if (rowSelected<row-3 && field[colSelected][rowSelected+3]==p && field[colSelected+2][rowSelected]==q && field[colSelected+1][rowSelected]==q) {
+        else if (rowSelected<row-3 && field[colSelected][rowSelected+3]==p && field[colSelected][rowSelected+2]==q && field[colSelected][rowSelected+1]==q) {
             result.put("row1", rowSelected+2);
             result.put("row2", rowSelected+1);
             result.put("col1", colSelected);

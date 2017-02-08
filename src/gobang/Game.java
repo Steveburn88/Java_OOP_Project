@@ -265,7 +265,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
         else for (row = 0; row < rowTiles; row++) {
                 for (col = 0; col < colTiles; col++) {
                     if (source == buttons[row][col]) {
-                        System.out.println("ROW: "+row+"\nCOLUMN: "+col+"\n\n");
+                        System.out.println("ROW: "+row+"\nCOLUMN: "+col+"\n");
                         insertCoin(col, row);
                     }
                 }
