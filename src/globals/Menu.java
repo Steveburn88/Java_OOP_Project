@@ -1,6 +1,6 @@
 package globals;
 
-import exceptions.PlayerNameException;
+import exceptions.*;
 import four_wins.Field;
 import four_wins.Game;
 
@@ -23,13 +23,14 @@ public class Menu extends JFrame implements ActionListener {
     JTextField txtUser2 = new JTextField("");
     JButton ng = new JButton("New Game");
     JButton lg = new JButton("Load");
-    JRadioButton fourWinsRBtn = new JRadioButton("Four Wins", true);
-    JRadioButton fiveWinsRBtn = new JRadioButton("Five Wins", false);
-    JRadioButton gobangRBtn = new JRadioButton("Gobang", false);
+    JRadioButton fourWinsRBtn = new JRadioButton("Four Wins");
+    JRadioButton fiveWinsRBtn = new JRadioButton("Five Wins");
+    JRadioButton gobangRBtn = new JRadioButton("Gobang");
     JLabel label = new JLabel();
     JPanel mainPanel;
     JPanel radioPanel;
     JPanel buttonPanel;
+    ButtonGroup btngroup;
 
     // Constructor:
     public Menu(String title) {
@@ -46,6 +47,10 @@ public class Menu extends JFrame implements ActionListener {
         mainPanel = new JPanel();
         radioPanel = new JPanel();
         buttonPanel = new JPanel();
+        btngroup = new ButtonGroup();
+        btngroup.add(fourWinsRBtn);
+        btngroup.add(fiveWinsRBtn);
+        btngroup.add(gobangRBtn);
         Container content = getContentPane();
 
         // Layout manager
@@ -71,18 +76,17 @@ public class Menu extends JFrame implements ActionListener {
         // BoxLayout für das radioPanel einstellen
         radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.LINE_AXIS));
 
-        // Buttons hinzufügen
+        // Radio Buttons hinzufügen
         radioPanel.add(fourWinsRBtn);
         radioPanel.add(fiveWinsRBtn);
         radioPanel.add(gobangRBtn);
-
 
         //BoxLayout für das buttonPanel einstellen
         buttonPanel.setLayout(
                 new BoxLayout(
                         buttonPanel,BoxLayout.LINE_AXIS));
 
-        // oben, links, unten, rechts
+        // Buttons hinzufügen
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(5,0,5,0));
 
         buttonPanel.add(Box.createHorizontalGlue());
@@ -124,32 +128,62 @@ public class Menu extends JFrame implements ActionListener {
                     throw new PlayerNameException("After a blank or a hyphen a capital "
                             + "letter is required.");
                 }
-                this.dispose();
                 Player p1 = new Player(txtUser1.getText(), 21);
                 Player p2 = new Player(txtUser2.getText(), 21);
                 int pTurn = 0;
-                Game screen = new Game("Four Wins", p1, p2, pTurn);
+                if (fourWinsRBtn.isSelected()) {
+                    this.dispose();
+                    four_wins.Game fourwins = new Game("Four Wins", p1, p2, pTurn);
+                } else if (fiveWinsRBtn.isSelected()) {
+                    this.dispose();
+                    //TODO: implement Five Wins
+                } else if (gobangRBtn.isSelected()) {
+                    this.dispose();
+                    gobang.Game gobang = new gobang.Game("Gobang", p1, p2, pTurn);
+                } else {
+                    throw new NoGameSelectedException("No Game Mode selected. Please choose one Game Mode.");
+                }
             }
             catch(PlayerNameException ex){
                 JOptionPane.showMessageDialog(mainPanel, ex.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
+            } catch (NoGameSelectedException noGame) {
+                JOptionPane.showMessageDialog(mainPanel, noGame.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
             }
         }
         if (source == lg) {
             try {
-                ObjectInputStream is = new ObjectInputStream(new FileInputStream("FourWins.save"));
-                Player p1 = (Player)is.readObject();
-                Player p2 = (Player)is.readObject();
-                int pTurn = is.readInt();
-                Field field = (Field)is.readObject();
-                JButton[][] buttons = (JButton[][])is.readObject();
-                Game loaded = new Game("Four Wins", p1, p2, pTurn, buttons);
-                loaded.field = field;
-                int rowTiles = field.getRow();
-                int colTiles = field.getColumn();
+                if (fourWinsRBtn.isSelected()) {
+                    ObjectInputStream is = new ObjectInputStream(new FileInputStream("FourWins.save"));
+                    Player p1 = (Player)is.readObject();
+                    Player p2 = (Player)is.readObject();
+                    int pTurn = is.readInt();
+                    Field field = (Field)is.readObject();
+                    JButton[][] buttons = (JButton[][])is.readObject();
+                    this.dispose();
+                    Game loaded = new Game("Four Wins", p1, p2, pTurn, buttons);
+                    loaded.field = field;
+                } else if (fiveWinsRBtn.isSelected()) {
+                    this.dispose();
+                    //TODO: implement Five Wins
+                } else if (gobangRBtn.isSelected()) {
+                    ObjectInputStream is = new ObjectInputStream(new FileInputStream("Gobang.save"));
+                    Player p1 = (Player)is.readObject();
+                    Player p2 = (Player)is.readObject();
+                    int pTurn = is.readInt();
+                    gobang.Field field = (gobang.Field)is.readObject();
+                    JButton[][] buttons = (JButton[][])is.readObject();
+                    this.dispose();
+                    gobang.Game loaded = new gobang.Game("Gobang", p1, p2, pTurn, buttons);
+                    loaded.field = field;
+                } else {
+                    throw new NoGameSelectedException("No Game Mode selected. Please choose one Game Mode.");
+                }
             } catch (IOException io) {
                 System.err.println(io.toString());
             } catch (ClassNotFoundException cnfe) {
                 System.err.println(cnfe.toString());
+            } catch (NoGameSelectedException noGame) {
+                JOptionPane.showMessageDialog(mainPanel, noGame.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
             }
 
         }
