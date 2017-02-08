@@ -1,11 +1,12 @@
 package gobang;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * Created by stefan on 07.02.17.
  */
-public class Field {
+public class Field implements Serializable {
     int row = 7;
     int column = 7;
 
@@ -42,6 +43,88 @@ public class Field {
 
     public void setCoin(int c, int r, int p) {
         field[c][r] = p;
+    }
+
+    /**
+     * This method checks, if the last placed coin beats two opponent coins. If so, a HashMap with the according
+     * positions is returned. The HashMap is empty otherwise.
+     * @param colSelected The column of the placed coin.
+     * @param rowSelected The row of the placed coin.
+     * @return A HashMap containing the positions of the coins to take away.
+     */
+    public HashMap<String, Integer> checkForTakeAway(int colSelected, int rowSelected) {
+        HashMap<String, Integer> result = new HashMap();
+        int p = field[colSelected][rowSelected];
+        int q=0;
+        if (p==1) {
+            q = 2;
+        } else if (p==2) {
+            q=1;
+        }
+        // horizontal check to left
+        if (colSelected>2 && field[colSelected-3][rowSelected]==p && field[colSelected-2][rowSelected]==q && field[colSelected-1][rowSelected]==q) {
+            result.put("row1", rowSelected);
+            result.put("row2", rowSelected);
+            result.put("col1", colSelected-2);
+            result.put("col2", colSelected-1);
+        }
+
+        // horizontel check to right
+        else if (colSelected<column-3 && field[colSelected+3][rowSelected]==p && field[colSelected+2][rowSelected]==q && field[colSelected+1][rowSelected]==q) {
+            result.put("row1", rowSelected);
+            result.put("row2", rowSelected);
+            result.put("col1", colSelected+2);
+            result.put("col2", colSelected+1);
+        }
+
+        // vertical check up
+        else if (rowSelected>2 && field[colSelected][rowSelected-3]==p && field[colSelected][rowSelected-2]==q && field[colSelected][rowSelected-1]==q) {
+            result.put("row1", rowSelected+2);
+            result.put("row2", rowSelected+1);
+            result.put("col1", colSelected);
+            result.put("col2", colSelected);
+        }
+
+        // vertical check down
+        else if (rowSelected<row-3 && field[colSelected][rowSelected+3]==p && field[colSelected+2][rowSelected]==q && field[colSelected+1][rowSelected]==q) {
+            result.put("row1", rowSelected+2);
+            result.put("row2", rowSelected+1);
+            result.put("col1", colSelected);
+            result.put("col2", colSelected);
+        }
+
+        // diagonal left & up
+        else if (colSelected>2 && rowSelected>2 && field[colSelected-3][rowSelected-3]==p && field[colSelected-2][rowSelected-2]==q && field[colSelected-1][rowSelected-1]==q) {
+            result.put("row1", rowSelected-2);
+            result.put("row2", rowSelected-1);
+            result.put("col1", colSelected-2);
+            result.put("col2", colSelected-1);
+        }
+
+        // diagonal left & down
+        else if (colSelected>2 && rowSelected<row-3 && field[colSelected-3][rowSelected+3]==p && field[colSelected-2][rowSelected+2]==q && field[colSelected-1][rowSelected+1]==q) {
+            result.put("row1", rowSelected+2);
+            result.put("row2", rowSelected+1);
+            result.put("col1", colSelected-2);
+            result.put("col2", colSelected-1);
+        }
+
+        // diagonal right & down
+        else if (colSelected<column-3 && rowSelected<row-3 && field[colSelected+3][rowSelected+3]==p && field[colSelected+2][rowSelected+2]==q && field[colSelected+1][rowSelected+1]==q) {
+            result.put("row1", rowSelected+2);
+            result.put("row2", rowSelected+1);
+            result.put("col1", colSelected+2);
+            result.put("col2", colSelected+1);
+        }
+
+        // diagonal right & up
+        else if (colSelected<column-3 && rowSelected>2 && field[colSelected+3][rowSelected-3]==p && field[colSelected+2][rowSelected-2]==q && field[colSelected+1][rowSelected-1]==q) {
+            result.put("row1", rowSelected-2);
+            result.put("row2", rowSelected-1);
+            result.put("col1", colSelected+2);
+            result.put("col2", colSelected+1);
+        }
+        return result;
     }
 
     /**

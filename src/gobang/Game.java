@@ -1,13 +1,19 @@
 package gobang;
 
 import globals.Player;
+import globals.Menu;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * Created by stefan on 07.02.17.
@@ -72,9 +78,6 @@ public class Game extends JFrame implements ActionListener, Serializable {
                     buttons[row][col] = new JButton();
                     buttons[row][col].setBackground(Color.WHITE);
                     buttons[row][col].addActionListener(this);
-                    if(row!=0){
-                        buttons[row][col].setEnabled(false);
-                    }
                 }
                 gamePanel.add(buttons[row][col]);
             }
@@ -110,6 +113,126 @@ public class Game extends JFrame implements ActionListener, Serializable {
         this(title, p1, p2, pTurn, null);
     }
 
+    /**
+     * This method is used to display winners name in south region of frame.
+     * @author Tiana Dabovic
+     */
+    public void setFinishNote(){
+        finishNote.setHorizontalAlignment(SwingConstants.CENTER);
+        content.add(finishNote, BorderLayout.SOUTH);
+    }
+
+    /**
+     * This method uses inputed map to get rows and columns which have to be marked. It sets border
+     * of red color on buttons that make winning combination.
+     * @author Tiana Dabovic
+     * @param scoring Map that contains numbers of rows and columns of win combin.
+     */
+    public void markWinningStreak(HashMap<String,Object> scoring){
+        buttons[(int) scoring.get("row1")][(int) scoring.get("col1")].setBorder(new LineBorder(Color.RED, 5));
+        buttons[(int) scoring.get("row2")][(int) scoring.get("col2")].setBorder(new LineBorder(Color.RED, 5));
+        buttons[(int) scoring.get("row3")][(int) scoring.get("col3")].setBorder(new LineBorder(Color.RED, 5));
+        buttons[(int) scoring.get("row4")][(int) scoring.get("col4")].setBorder(new LineBorder(Color.RED, 5));
+        buttons[(int) scoring.get("row5")][(int) scoring.get("col5")].setBorder(new LineBorder(Color.RED, 5));
+    }
+
+    /**
+     * This method is used to disable all buttons when game is finished.
+     * @author Tiana Dabovic, Stefan Schneider
+     */
+    public void disableButtons(){
+        for(int c=0; c<colTiles; c++){
+            for (int r=0; r<rowTiles; r++)
+                buttons[r][c].setEnabled(false);
+        }
+        insertBtn.setEnabled(false);
+        sg.setEnabled(false);
+    }
+
+    /**
+     * This method updates the text in the game screen, eg. the current Player and the coins.
+     * @param p The next current Player.
+     * @author Stefan Schneider
+     */
+    public void updateText(Player p) {
+        coinsStatus.setText("<html>" + p1.getName() + ": " + p1.getCoins() + "coins<br>" + p2.getName() + ": " + p2.getCoins() + "coins</html>");
+        turn.setText("Current Turn: " + p.getName());
+    }
+
+    @SuppressWarnings("Duplicates")
+    public void insertCoin(int c, int r){
+        if (pTurn % 2 == 0) {
+            int n = p1.getCoins();
+            p1.setCoins(n-1);
+            if(field.isEmpty(c, r)) {
+                field.setCoin(c, r, 1);
+                buttons[r][c].setIcon(g1);
+                buttons[r][c].setIconTextGap(-10);
+                buttons[r][c].setDisabledIcon(g1);
+                buttons[r][c].setEnabled(false);
+                HashMap<String, Integer> takeaway = field.checkForTakeAway(c, r);
+                if (!takeaway.isEmpty()) {
+                    int enemyRow1 = takeaway.get("row1");
+                    int enemyRow2 = takeaway.get("row2");
+                    int enemyCol1 = takeaway.get("col1");
+                    int enemyCol2 = takeaway.get("col2");
+                    buttons[enemyRow1][enemyCol1].setIcon(null);
+                    buttons[enemyRow1][enemyCol1].setEnabled(true);
+                    field.setCoin(enemyCol1, enemyRow1, 0);
+                    buttons[enemyRow2][enemyCol2].setIcon(null);
+                    buttons[enemyRow2][enemyCol2].setEnabled(true);
+                    field.setCoin(enemyCol2, enemyRow2, 0);
+                }
+                updateText(p2);
+            }
+        }
+        else if (pTurn % 2 == 1) {
+            int n = p2.getCoins();
+            p2.setCoins(n-1);
+            if(field.isEmpty(c, r)) {
+                field.setCoin(c, r, 2);
+                buttons[r][c].setIcon(g2);
+                buttons[r][c].setIconTextGap(-10);
+                buttons[r][c].setDisabledIcon(g2);
+                buttons[r][c].setEnabled(false);
+                HashMap<String, Integer> takeaway = field.checkForTakeAway(c, r);
+                if (!takeaway.isEmpty()) {
+                    int enemyRow1 = takeaway.get("row1");
+                    int enemyRow2 = takeaway.get("row2");
+                    int enemyCol1 = takeaway.get("col1");
+                    int enemyCol2 = takeaway.get("col2");
+                    buttons[enemyRow1][enemyCol1].setIcon(null);
+                    buttons[enemyRow1][enemyCol1].setEnabled(true);
+                    field.setCoin(enemyCol1, enemyRow1, 0);
+                    buttons[enemyRow2][enemyCol2].setIcon(null);
+                    buttons[enemyRow2][enemyCol2].setEnabled(true);
+                    field.setCoin(enemyCol2, enemyRow2, 0);
+                }
+                updateText(p1);
+            }
+        }
+        HashMap<String, Object> scoring=field.checkForWin();
+        String noteToShow=scoring.get("note").toString();
+        if(noteToShow=="win p1"){
+            finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>"+p1.getName()+" wins!</div></html>");
+            setFinishNote();
+            markWinningStreak(scoring);
+            disableButtons();
+        }
+        else if(noteToShow=="win p2"){
+            finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>"+p2.getName()+" wins!</div></html>");
+            setFinishNote();
+            markWinningStreak(scoring);
+            disableButtons();
+        }
+        else if(p1.getCoins()==0 && p2.getCoins()==0){
+            finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>Draw!</div></html>");
+            setFinishNote();
+            disableButtons();
+        }
+        pTurn += 1;
+    }
+
 
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -120,9 +243,30 @@ public class Game extends JFrame implements ActionListener, Serializable {
             p2.setCoins(21);
             Game screen = new Game("Gobang", p1, p2, 0);
         }
+        else if (source == sg) {
+            try {
+                ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("Gobang.save"));
+                os.writeObject(p1);
+                os.writeObject(p2);
+                os.writeInt(pTurn);
+                os.writeObject(field);
+                os.writeObject(buttons);
+                os.close();
+            } catch (IOException io) {
+                System.out.println(io.toString());
+            }
+        }
         else if (source == quit) {
             dispose();
             Menu main = new Menu("Hauptmenü");
         }
+        else for (row = 0; row < rowTiles; row++) {
+                for (col = 0; col < colTiles; col++) {
+                    if (source == buttons[row][col]) {
+                        System.out.println("ROW: "+row+"\nCOLUMN: "+col+"\n\n");
+                        insertCoin(col, row);
+                    }
+                }
+            }
     }
 }

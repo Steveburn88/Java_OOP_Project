@@ -1,12 +1,11 @@
 package four_wins;
 
-import globals.*;
+import globals.Player;
 import globals.Menu;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.ActionListener;
