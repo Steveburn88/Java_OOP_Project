@@ -182,6 +182,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
                     buttons[enemyRow2][enemyCol2].setIcon(null);
                     buttons[enemyRow2][enemyCol2].setEnabled(true);
                     field.setCoin(enemyCol2, enemyRow2, 0);
+                    p2.setCoins(p2.getCoins()+2);
                 }
                 updateText(p2);
             }
@@ -207,6 +208,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
                     buttons[enemyRow2][enemyCol2].setIcon(null);
                     buttons[enemyRow2][enemyCol2].setEnabled(true);
                     field.setCoin(enemyCol2, enemyRow2, 0);
+                    p1.setCoins(p1.getCoins()+2);
                 }
                 updateText(p1);
             }

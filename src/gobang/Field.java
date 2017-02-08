@@ -79,8 +79,8 @@ public class Field implements Serializable {
 
         // vertical check up
         else if (rowSelected>2 && field[colSelected][rowSelected-3]==p && field[colSelected][rowSelected-2]==q && field[colSelected][rowSelected-1]==q) {
-            result.put("row1", rowSelected+2);
-            result.put("row2", rowSelected+1);
+            result.put("row1", rowSelected-2);
+            result.put("row2", rowSelected-1);
             result.put("col1", colSelected);
             result.put("col2", colSelected);
         }
