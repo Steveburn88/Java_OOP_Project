@@ -10,7 +10,7 @@ public class Field implements Serializable {
     final int column = 7;
     final int row = 6;
     /**
-     * Integer representation of the field.
+     * Integer array representation of the field.
      * 0 means empty, 1 and 2 are dedicated to the according player.
      */
 	int[][] field = new int[column][row];
@@ -27,6 +27,13 @@ public class Field implements Serializable {
 
     }
 
+	/**
+	 * This method checks if a given position of the field is empty. The field is a 2dimensional array
+	 * and empty means, the position has the value 0.
+	 * @param c The column to check
+	 * @param r The row to check
+     * @return boolean Method returns true, if position is empty.
+     */
     public boolean isEmpty(int c, int r) {
         if (field[c][r] == 0) return true;
         else return false;
@@ -45,6 +52,14 @@ public class Field implements Serializable {
 		else return false;
 	}
 
+	/**
+	 * This method set a coin at the given position on the field. The field is a 2dimensional Array,
+	 * the written value is the number of the player.
+	 * @author Stefan Schneider
+	 * @param c The column to place the coin.
+	 * @param r The row to place the coin.
+     * @param p The player who place the coin.
+     */
     public void setCoin(int c, int r, int p) {
         field[c][r] = p;
     }
