@@ -22,34 +22,48 @@ public class Game extends JFrame implements ActionListener, Serializable {
     // Components
     Player p1, p2;
     JButton ng = new JButton("New Game");
-    JButton sg = new JButton("Save");
-    JButton insertBtn= new JButton("Insert new");
+    static JButton sg;
+    static JButton insertBtn;
     JButton quit = new JButton("Exit to Menu");
-    JLabel coinsStatus = new JLabel();
-    JLabel finishNote= new JLabel();
-    JLabel turn = new JLabel();
+    static JLabel coinsStatus;
+    static JLabel finishNote;
+    static JLabel turn;
     JPanel buttonbox;
     JPanel gamePanel;
     final ImageIcon g1 = new ImageIcon(System.getProperty("user.dir")+"/graphics/star_blue.png");
     final ImageIcon g2 = new ImageIcon(System.getProperty("user.dir")+"/graphics/star_green.png");
     int pTurn = 0;
-    public Field field = new Field();
+    public Field field;
     int row, col;
-    int rowTiles = field.getRow();
-    int colTiles = field.getColumn();
-    JButton[][] buttons = new JButton[rowTiles][colTiles];
-    GridLayout myGrid = new GridLayout(rowTiles, colTiles);
-    Container content=new Container();
+    int rowTiles;
+    int colTiles;
+    JButton[][] buttons;
+    GridLayout myGrid;
+    static Container content;
+    public String loadedFileName="";
 
     // Constructor with buttons:
-    public Game(String title, Player p1, Player p2, int pTurn, JButton[][] btns) {
+    public Game(String title, Player p1, Player p2, int pTurn, JButton[][] btns, int col, int row) {
         super(title);
+        sg=new JButton("Save");
+        insertBtn= new JButton("Insert new");
+        coinsStatus = new JLabel();
+        finishNote = new JLabel();
+        turn = new JLabel();
+        content=new Container();
+        field = new Field(col, row);
+        rowTiles=field.getRow();
+        colTiles=field.getColumn();
         this.pTurn = pTurn;
         this.p1 = p1;
         this.p2 = p2;
         if (btns!=null) {
             buttons = btns;
         }
+        else{
+        	buttons = new JButton[rowTiles][colTiles];
+        }
+        myGrid = new GridLayout(rowTiles, colTiles);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gamePanel = new JPanel();
         gamePanel.setLayout(myGrid);
@@ -109,8 +123,8 @@ public class Game extends JFrame implements ActionListener, Serializable {
     }
 
     // Constructor for a new game:
-    public Game(String title, Player p1, Player p2, int pTurn) {
-        this(title, p1, p2, pTurn, null);
+    public Game(String title, Player p1, Player p2, int pTurn, int col, int row) {
+        this(title, p1, p2, pTurn, null, col, row);
     }
 
     /**
@@ -241,21 +255,32 @@ public class Game extends JFrame implements ActionListener, Serializable {
         if (source == ng) {
             // set Coins to Start value
             dispose();
-            p1.setCoins(21);
-            p2.setCoins(21);
-            Game screen = new Game("Gobang", p1, p2, 0);
+            p1.setCoins((field.getColumn()*field.getRow())/2);
+            p2.setCoins((field.getColumn()*field.getRow())/2);
+            Game screen = new Game("Gobang", p1, p2, 0, field.getColumn(), field.getRow());
         }
         else if (source == sg) {
+        	String currentTime=Long.toString(System.currentTimeMillis());
+        	String fileName="Gobang_"+currentTime+".save";
+        	if(!loadedFileName.isEmpty()){
+        		fileName=loadedFileName;
+        	}
             try {
-                ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("Gobang.save"));
-                os.writeObject(p1);
-                os.writeObject(p2);
-                os.writeInt(pTurn);
-                os.writeObject(field);
-                os.writeObject(buttons);
-                os.close();
-            } catch (IOException io) {
-                System.out.println(io.toString());
+            	saveGame(fileName);
+            	ImageIcon sgIcon = new ImageIcon(System.getProperty("user.dir")+"/graphics/saveIcon.png");
+            	String saveMsg="Succesfully saved to "+fileName+" file!";
+            	JOptionPane savePane=new JOptionPane(saveMsg, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, sgIcon, new Object[] {});
+                final JDialog saveDialog = savePane.createDialog(gamePanel,fileName);
+                saveDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+                Timer timer = new Timer(3000, new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        saveDialog.dispose();
+                    }
+                });
+                timer.start();
+                saveDialog.setVisible(true);
+            } catch (IOException ex) {
+            	JOptionPane.showMessageDialog(gamePanel, "Error while saving game! Technical message: "+ex.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
             }
         }
         else if (source == quit) {
@@ -269,6 +294,36 @@ public class Game extends JFrame implements ActionListener, Serializable {
                         insertCoin(col, row);
                     }
                 }
-            }
+         }
+    }
+    
+    /**
+     * Creates OutputStream for saving game. If there is file with provided filename, game is
+     * saved to that file.
+     * If not new file is created in folder saves. If error occures it throws ioexception.
+     * @author Tiana Dabovic, Stefan Schneider
+     * @param fileName Name of file where game should be saved.
+     * @throws IOException in case somethings wrong in writing objects to file.
+     */
+    
+    public void saveGame(String fileName) throws IOException{
+    	ObjectOutputStream os=null;
+    	try{
+    		os = new ObjectOutputStream(new FileOutputStream("saves/"+fileName));
+    		os.writeObject(p1);
+    		os.writeObject(p2);
+    		os.writeInt(pTurn);
+    		os.writeObject(buttons);
+    		os.writeObject(field);
+    	}
+    	catch(IOException ex){
+    		System.out.println(ex.getMessage());
+    		throw new IOException(ex.getMessage());
+    	}
+    	finally{
+    		if(os!=null){
+    			os.close();
+    		}
+    	}
     }
 }

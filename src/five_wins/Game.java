@@ -1,4 +1,4 @@
-package four_wins;
+package five_wins;
 
 import globals.Player;
 import globals.Menu;
@@ -16,8 +16,15 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- * Created by stefan on 14.01.17.
- */
+* The Game is used for making interface for game and provides logic for playing game.
+* It implements Serializable class for I/O operations and ActionListener for buttons logic.
+* It extends JFrame for using GUI components.
+* 
+*
+* @author  Tiana Dabovic
+* @version 1.1
+* @since   1.1
+*/
 
 public class Game extends JFrame implements ActionListener, Serializable {
     // Components
@@ -180,6 +187,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
         buttons[(int) scoring.get("row2")][(int) scoring.get("col2")].setBorder(new LineBorder(Color.RED, 5));
         buttons[(int) scoring.get("row3")][(int) scoring.get("col3")].setBorder(new LineBorder(Color.RED, 5));
         buttons[(int) scoring.get("row4")][(int) scoring.get("col4")].setBorder(new LineBorder(Color.RED, 5));
+        buttons[(int) scoring.get("row5")][(int) scoring.get("col5")].setBorder(new LineBorder(Color.RED, 5));
     }
 
     /**
@@ -215,7 +223,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
         else if (source == sg) {
         	String currentTime=Long.toString(System.currentTimeMillis());
-        	String fileName="FourWins_"+currentTime+".save";
+        	String fileName="FiveWins_"+currentTime+".save";
         	if(!loadedFileName.isEmpty()){
         		fileName=loadedFileName;
         	}
@@ -318,7 +326,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
      * If not new file is created in folder saves. If error occures it throws ioexception.
      * @author Tiana Dabovic, Stefan Schneider
      * @param fileName Name of file where game should be saved.
-     * @throws IOException in case somethings wrong in writing objects to file.
+     * @throws IOException in case something is wrong in writing objects to file.
      */
     
     public void saveGame(String fileName) throws IOException{

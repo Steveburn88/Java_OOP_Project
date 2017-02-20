@@ -54,11 +54,25 @@ public class Player implements Serializable {
     	return isCapital;
     }
     
+    /**
+     * This method is used to check if player name contains only allowed characters.
+     * @author Tiana Dabovic
+     * @return boolean Method returns boolean value true if name contains only allowed characters.
+     *  or false if not.
+    */
+    
     public boolean containsAllowedCharacters(){
     	String allowedCharactersRegex="[A-ZÄÖÜ][A-ZÄÖÜa-zäöüß -]+";
     	if(name.matches(allowedCharactersRegex)) return true;
     	else return false;
     }
+    
+    /**
+     * This method checks if player name is same with other player name.
+     * @author Tiana Dabovic
+     * @param otherName Name of other player
+     * @return boolean Method returns boolean value true if names are same, or false if not
+    */
     
     public boolean areNamesSame(String otherName){
     	if(name.equals(otherName)) return true;

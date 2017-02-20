@@ -7,14 +7,14 @@ import java.util.HashMap;
  * Created by stefan on 07.02.17.
  */
 public class Field implements Serializable {
-    int row = 7;
-    int column = 7;
+    int row;
+    int column;
 
     /**
      * Integer representation of the field.
      * 0 means empty, 1 and 2 are dedicated to the according player.
      */
-    int[][] field = new int[column][row];
+    int[][] field;
 
     public int getRow() {
         return row;
@@ -32,8 +32,10 @@ public class Field implements Serializable {
         this.column = column;
     }
 
-    public Field() {
-
+    public Field(int column, int row) {
+    	this.column=column;
+    	this.row=row;
+    	field = new int[column][row];
     }
 
     public boolean isEmpty(int c, int r) {
