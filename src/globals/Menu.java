@@ -168,17 +168,23 @@ public class Menu extends JFrame implements ActionListener {
             	if(p1.areNamesSame(p2.getName())){
             		throw new PlayerNameException("Names can not be same!");
             	}
-            	if(!isColsRowsProductEven(numberOfCols, numberOfRows)){
-            		throw new ColsRowsException("Product of number of rows and columns must be even!");
-            	}
-                int pTurn = 0;
+            	int pTurn = 0;
                 if (fourWinsRBtn.isSelected()) {
+                	if(!isColsRowsProductEven(numberOfCols, numberOfRows)){
+                		throw new ColsRowsException("Product of number of rows and columns must be even!");
+                	}
                     this.dispose();
                     Game fourwins = new Game("Four Wins", p1, p2, pTurn, numberOfCols, numberOfRows);
                 } else if (fiveWinsRBtn.isSelected()) {
+                	if(numberOfCols!=numberOfRows){
+                		throw new ColsRowsException("Playing board must be square!");
+                	}
                     this.dispose();
                     five_wins.Game fivewins = new five_wins.Game("Five Wins", p1, p2, pTurn, numberOfCols, numberOfRows);
                 } else if (gobangRBtn.isSelected()) {
+                	if(numberOfCols!=numberOfRows){
+                		throw new ColsRowsException("Playing board must be square!");
+                	}
                     this.dispose();
                     gobang.Game gobang = new gobang.Game("Gobang", p1, p2, pTurn, numberOfCols, numberOfRows);
                 } else {

@@ -43,11 +43,30 @@ public class Field implements Serializable {
 	 * @param r The row to check
      * @return boolean Method returns true, if position is empty.
      */
+    
     public boolean isEmpty(int c, int r) {
         if (field[c][r] == 0) return true;
         else return false;
     }
-
+    
+    /**
+	 * This method checks if board is full of coins.
+     * @return boolean Method returns true, if board is full. Else returns false.
+     */
+    
+    public boolean isBoardFull(){
+    	boolean isFull=true;
+    	for(int r=0; r<row; r++){
+    		for (int c=0; c<column; c++){	
+    			if(isEmpty(c,r)){
+    				isFull=false;
+    				break;
+    			}
+    		}
+    	}
+    	return isFull;
+    }
+    
 	/**
 	 * This method is used to check if column is already full. It checks if there is a coin
 	 * inserted in first row. If it is, it means that column is full and there is no more space
@@ -157,7 +176,7 @@ public class Field implements Serializable {
             for (int r=0; r<row-4; r++){
             	
                 if (field[c][r] == 1 && field[c-1][r+1] == 1 && field[c-2][r+2] == 1 && field[c-3][r+3] == 1 && field[c-4][r+4] == 1){
-                	mapToReturn=fieldsToHighlight(r,r+1,r+2,r+3,r+4,c,c-1,c-2,c-3,c+4);
+                	mapToReturn=fieldsToHighlight(r,r+1,r+2,r+3,r+4,c,c-1,c-2,c-3,c-4);
                 	winningNote="win p1";
     				break outerloop2;
                 }

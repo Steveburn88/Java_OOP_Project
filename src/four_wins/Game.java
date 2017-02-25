@@ -31,8 +31,8 @@ public class Game extends JFrame implements ActionListener, Serializable {
     static JLabel turn;
     JPanel buttonbox;
     JPanel gamePanel;
-    final ImageIcon g1 = new ImageIcon(System.getProperty("user.dir")+"/graphics/star_blue.png");
-    final ImageIcon g2 = new ImageIcon(System.getProperty("user.dir")+"/graphics/star_green.png");
+    ImageIcon g1 = new ImageIcon(System.getProperty("user.dir")+"/graphics/coins/star_blue.png");
+    ImageIcon g2 = new ImageIcon(System.getProperty("user.dir")+"/graphics/coins/star_green.png");
     int pTurn = 0;
     public Field field;
     int row, col;
@@ -124,6 +124,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
         setSize(720, 576);
         setLocation(100, 50);
         setVisible(true);
+        setCoinsImageSize(buttons[0][0].getWidth(), buttons[0][0].getHeight());
     }
 
     // Constructor for a new game:
@@ -131,6 +132,24 @@ public class Game extends JFrame implements ActionListener, Serializable {
         this(title, p1, p2, pTurn, null, col, row);
     }
 
+    /**
+     * This method is used to resize coins images. Images size is set according to
+     * size of a button that represents field of playing board.
+     * @author Tiana Dabovic
+     * @param width Width of button that represents field.
+     * @param width Height of button that represents field.
+     */
+    
+    public void setCoinsImageSize(int width, int height){
+    	if(width>70) width=70;
+    	if(height>70) height=70;
+    	Image newImg1=g1.getImage();
+        newImg1 = newImg1.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+        g1 = new ImageIcon(newImg1); 
+        Image newImg2=g2.getImage();
+        newImg2 = newImg2.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+        g2 = new ImageIcon(newImg2);
+    }
 
     /**
     * This method is used to check if number of column in which player wants to insert coin is in
