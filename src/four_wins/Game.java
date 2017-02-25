@@ -1,13 +1,13 @@
 package four_wins;
 
-import globals.Player;
 import globals.Menu;
+import globals.Player;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -291,25 +291,32 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
         HashMap<String, Object> scoring=field.checkForWin();
         String noteToShow=scoring.get("note").toString();
-        if(noteToShow=="win p1"){
-            finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>"+p1.getName()+" wins!</div></html>");
-            setFinishNote();
-            markWinningStreak(scoring);
-            disableButtons();
+        if(noteToShow=="win p1") {
+            win(p1, scoring);
         }
-        else if(noteToShow=="win p2"){
-            finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>"+p2.getName()+" wins!</div></html>");
-            setFinishNote();
-            markWinningStreak(scoring);
-            disableButtons();
+        else if(noteToShow=="win p2") {
+            win(p2, scoring);
         }
-        else if(p1.getCoins()==0 && p2.getCoins()==0){
+        else if(p1.getCoins()==0 && p2.getCoins()==0) {
             finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>Draw!</div></html>");
             setFinishNote();
             disableButtons();
         }
 
         pTurn += 1;
+    }
+
+    /**
+     * Displays the winner and disable the Button on the Field.
+     * @auth Tiana Dabovic, Stefan Schneider
+     * @param p The Player who wins
+     * @param scoring The Hashmap contains the winning coins
+     */
+    public void win(Player p, HashMap<String, Object> scoring) {
+        finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>"+p.getName()+" wins!</div></html>");
+        setFinishNote();
+        markWinningStreak(scoring);
+        disableButtons();
     }
 
     /**

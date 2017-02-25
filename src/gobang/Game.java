@@ -203,6 +203,10 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
         else if (pTurn % 2 == 1) {
             int n = p2.getCoins();
+            if (n==0) {
+
+            }
+            //TODO: Check if the amount of coins of a player is 0 at the beginning of a turn!
             p2.setCoins(n-1);
             if(field.isEmpty(c, r)) {
                 field.setCoin(c, r, 2);
@@ -230,16 +234,18 @@ public class Game extends JFrame implements ActionListener, Serializable {
         HashMap<String, Object> scoring=field.checkForWin();
         String noteToShow=scoring.get("note").toString();
         if(noteToShow=="win p1"){
-            finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>"+p1.getName()+" wins!</div></html>");
-            setFinishNote();
-            markWinningStreak(scoring);
-            disableButtons();
+            win(p1, scoring);
+            //finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>"+p1.getName()+" wins!</div></html>");
+            //setFinishNote();
+            //markWinningStreak(scoring);
+            //disableButtons();
         }
         else if(noteToShow=="win p2"){
-            finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>"+p2.getName()+" wins!</div></html>");
-            setFinishNote();
-            markWinningStreak(scoring);
-            disableButtons();
+            win(p2, scoring);
+            //finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>"+p2.getName()+" wins!</div></html>");
+            //setFinishNote();
+            //markWinningStreak(scoring);
+            //disableButtons();
         }
         else if(p1.getCoins()==0 && p2.getCoins()==0){
             finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>Draw!</div></html>");
@@ -247,6 +253,13 @@ public class Game extends JFrame implements ActionListener, Serializable {
             disableButtons();
         }
         pTurn += 1;
+    }
+
+    public void win(Player p, HashMap<String, Object> scoring) {
+        finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>"+p.getName()+" wins!</div></html>");
+        setFinishNote();
+        markWinningStreak(scoring);
+        disableButtons();
     }
 
 
