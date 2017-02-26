@@ -6,6 +6,9 @@ import globals.Player;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -214,6 +217,7 @@ public class Game extends five_wins.Game implements ActionListener, Serializable
         disableButtons();
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -225,11 +229,27 @@ public class Game extends five_wins.Game implements ActionListener, Serializable
             Game screen = new Game("Gobang", p1, p2, 0, field.getColumn(), field.getRow());
         } else if (source == sg) {
             String currentTime = Long.toString(System.currentTimeMillis());
-            String fileName = "Gobang_" + currentTime + ".save";
+            String fileName = title + "_" + currentTime + ".save";
             if (!loadedFileName.isEmpty()) {
                 fileName = loadedFileName;
             }
-            guiSaved(fileName);
+            try {
+                saveGame(fileName);
+                ImageIcon sgIcon = new ImageIcon(System.getProperty("user.dir") + "/graphics/saveIcon.png");
+                String saveMsg = "Succesfully saved to " + fileName + " file!";
+                JOptionPane savePane = new JOptionPane(saveMsg, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, sgIcon, new Object[]{});
+                final JDialog saveDialog = savePane.createDialog(gamePanel, fileName);
+                saveDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+                Timer timer = new Timer(3000, new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        saveDialog.dispose();
+                    }
+                });
+                timer.start();
+                saveDialog.setVisible(true);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(gamePanel, "Error while saving game! Technical message: " + ex.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
+            }
         } else if (source == quit) {
             dispose();
             Menu main = new Menu("Hauptmenü");
@@ -239,6 +259,37 @@ public class Game extends five_wins.Game implements ActionListener, Serializable
                     System.out.println("ROW: " + row + "\nCOLUMN: " + col + "\n");
                     insertCoin(col, row);
                 }
+            }
+        }
+    }
+
+    /**
+     * Creates OutputStream for saving game. If there is file with provided filename, game is
+     * saved to that file.
+     * If not new file is created in folder saves. If error occures it throws ioexception.
+     * @author Tiana Dabovic, Stefan Schneider
+     * @param fileName Name of file where game should be saved.
+     * @throws IOException in case somethings wrong in writing objects to file.
+     */
+    @SuppressWarnings("Duplicates")
+    @Override
+    public void saveGame(String fileName) throws IOException{
+        ObjectOutputStream os=null;
+        try{
+            os = new ObjectOutputStream(new FileOutputStream("saves/"+fileName));
+            os.writeObject(p1);
+            os.writeObject(p2);
+            os.writeInt(pTurn);
+            os.writeObject(buttons);
+            os.writeObject(field);
+        }
+        catch(IOException ex){
+            System.out.println(ex.getMessage());
+            throw new IOException(ex.getMessage());
+        }
+        finally{
+            if(os!=null){
+                os.close();
             }
         }
     }

@@ -248,7 +248,7 @@ public abstract class Game extends JFrame implements ActionListener, Serializabl
      * @param fileName Name of file where game should be saved.
      * @throws IOException in case somethings wrong in writing objects to file.
      */
-
+    @SuppressWarnings("Duplicates")
     public void saveGame(String fileName) throws IOException{
         ObjectOutputStream os=null;
         try{
@@ -267,26 +267,6 @@ public abstract class Game extends JFrame implements ActionListener, Serializabl
             if(os!=null){
                 os.close();
             }
-        }
-    }
-
-    public void guiSaved(String fileName) {
-        try {
-            saveGame(fileName);
-            ImageIcon sgIcon = new ImageIcon(System.getProperty("user.dir") + "/graphics/saveIcon.png");
-            String saveMsg = "Succesfully saved to " + fileName + " file!";
-            JOptionPane savePane = new JOptionPane(saveMsg, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, sgIcon, new Object[]{});
-            final JDialog saveDialog = savePane.createDialog(gamePanel, fileName);
-            saveDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-            Timer timer = new Timer(3000, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    saveDialog.dispose();
-                }
-            });
-            timer.start();
-            saveDialog.setVisible(true);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(gamePanel, "Error while saving game! Technical message: " + ex.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
         }
     }
 
