@@ -205,6 +205,9 @@ public class Menu extends JFrame implements ActionListener {
             	if(p1.areNamesSame(p2.getName())){
             		throw new PlayerNameException("Names can not be same!");
             	}
+                if (coinColor1 == coinColor2) {
+                    throw new CoinColorException("Colors cannot be the same");
+                }
             	int pTurn = 0;
                 if (fourWinsRBtn.isSelected()) {
                 	if(!isColsRowsProductEven(numberOfCols, numberOfRows)){
@@ -230,7 +233,11 @@ public class Menu extends JFrame implements ActionListener {
             }
             catch(PlayerNameException ex){
                 JOptionPane.showMessageDialog(userPanel, ex.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
-            } catch (NoGameSelectedException noGame) {
+            }
+            catch (CoinColorException ex) {
+                JOptionPane.showMessageDialog(userPanel, ex.getMessage(), "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch (NoGameSelectedException noGame) {
                 JOptionPane.showMessageDialog(userPanel, noGame.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
             }
             catch (ColsRowsException ex) {
