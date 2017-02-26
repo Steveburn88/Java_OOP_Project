@@ -8,7 +8,6 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -178,7 +177,6 @@ public class Game extends globals.Game implements ActionListener, Serializable {
         buttons[(int) scoring.get("row5")][(int) scoring.get("col5")].setBorder(new LineBorder(Color.RED, 5));
     }
 
-    
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -195,23 +193,7 @@ public class Game extends globals.Game implements ActionListener, Serializable {
         	if(!loadedFileName.isEmpty()){
         		fileName=loadedFileName;
         	}
-            try {
-            	saveGame(fileName);
-            	ImageIcon sgIcon = new ImageIcon(System.getProperty("user.dir")+"/graphics/saveIcon.png");
-            	String saveMsg="Succesfully saved to "+fileName+" file!";
-            	JOptionPane savePane=new JOptionPane(saveMsg, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, sgIcon, new Object[] {});
-                final JDialog saveDialog = savePane.createDialog(gamePanel,fileName);
-                saveDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-                Timer timer = new Timer(3000, new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        saveDialog.dispose();
-                    }
-                });
-                timer.start();
-                saveDialog.setVisible(true);
-            } catch (IOException ex) {
-            	JOptionPane.showMessageDialog(gamePanel, "Error while saving game! Technical message: "+ex.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
-            }
+            guiSaved(fileName);
         }
         else if (source == quit) {
             dispose();
