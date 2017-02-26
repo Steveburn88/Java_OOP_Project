@@ -32,8 +32,8 @@ public abstract class Game extends JFrame implements ActionListener, Serializabl
     public static JLabel turn;
     public JPanel buttonbox;
     public JPanel gamePanel;
-    public ImageIcon g1 = new ImageIcon(System.getProperty("user.dir")+"/graphics/star_blue.png");
-    public ImageIcon g2 = new ImageIcon(System.getProperty("user.dir")+"/graphics/star_green.png");
+    public ImageIcon g1 = new ImageIcon(System.getProperty("user.dir")+"/graphics/coins/star_blue.png");
+    public ImageIcon g2 = new ImageIcon(System.getProperty("user.dir")+"/graphics/coins/star_green.png");
     public int pTurn = 0;
     public Field field;
     public int row, col;
@@ -143,10 +143,10 @@ public abstract class Game extends JFrame implements ActionListener, Serializabl
     public void setCoinsImageSize(int width, int height){
         if(width>70) width=70;
         if(height>70) height=70;
-        Image newImg1=g1.getImage();
+        Image newImg1 = g1.getImage();
         newImg1 = newImg1.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
         g1 = new ImageIcon(newImg1);
-        Image newImg2=g2.getImage();
+        Image newImg2 = g2.getImage();
         newImg2 = newImg2.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
         g2 = new ImageIcon(newImg2);
     }

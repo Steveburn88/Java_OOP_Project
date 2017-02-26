@@ -76,16 +76,12 @@ public class Game extends globals.Game implements ActionListener, Serializable {
             int n = p1.getCoins();
             p1.setCoins(n-1);
             updateText(p2);
-            //coinsStatus.setText("<html>"+p1.getName()+": "+p1.getCoins()+"coins<br>"+p2.getName()+": "+p2.getCoins()+"coins</html>");
-            //turn.setText("Current Turn: "+p2.getName());
         }
         else if (pTurn % 2 == 1) {
             findWhereToInsertCoin(col, 2, g2);
             int n = p2.getCoins();
             p2.setCoins(n-1);
             updateText(p1);
-            //coinsStatus.setText("<html>"+p1.getName()+": "+p1.getCoins()+"coins<br>"+p2.getName()+": "+p2.getCoins()+"coins</html>");
-            //turn.setText("Current Turn: "+p1.getName());
         }
         HashMap<String, Object> scoring=field.checkForWin();
         String noteToShow=scoring.get("note").toString();
