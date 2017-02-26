@@ -123,6 +123,9 @@ public class Game extends globals.Game implements ActionListener, Serializable {
             if(!loadedFileName.isEmpty()){
                 fileName=loadedFileName;
             }
+            else{
+        		loadedFileName=fileName;
+        	}
             try {
                 saveGame(fileName);
                 ImageIcon sgIcon = new ImageIcon(System.getProperty("user.dir") + "/graphics/saveIcon.png");
