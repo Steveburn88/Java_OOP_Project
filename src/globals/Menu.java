@@ -22,17 +22,24 @@ import java.io.ObjectInputStream;
  */
 public class Menu extends JFrame implements ActionListener {
     // Components
-    JLabel User1 = new JLabel("Player 1:");
+    JPanel user1;
     JTextField txtUser1 = new JTextField("");
-    JLabel User2 = new JLabel("Player 2:");
+    JPanel user2;
     JTextField txtUser2 = new JTextField("");
     JButton ng = new JButton("New Game");
     JButton lg = new JButton("Load");
     JRadioButton fourWinsRBtn = new JRadioButton("Four Wins");
     JRadioButton fiveWinsRBtn = new JRadioButton("Five Wins");
     JRadioButton gobangRBtn = new JRadioButton("Gobang");
-    JLabel label = new JLabel();
-    JPanel mainPanel;
+    JPanel userPanel;
+    JPanel theme1;
+    JPanel theme2;
+    String[] shapes = {"Heart", "Star"};
+    String[] colors = {"Black", "Blue", "Green", "Red", "Transparent", "Yellow"};
+    JComboBox shape1 = new JComboBox(shapes);
+    JComboBox color1 = new JComboBox(colors);
+    JComboBox shape2 = new JComboBox(shapes);
+    JComboBox color2 = new JComboBox(colors);
     JPanel radioPanel;
     JPanel buttonPanel;
     JPanel settingsPanel;
@@ -52,7 +59,11 @@ public class Menu extends JFrame implements ActionListener {
         txtUser2.setToolTipText("Enter your name here, please.");
 
         // Containers
-        mainPanel = new JPanel();
+        userPanel = new JPanel();
+        user1 = new JPanel();
+        user2 =  new JPanel();
+        theme1 = new JPanel();
+        theme2 = new JPanel();
         radioPanel = new JPanel();
         buttonPanel = new JPanel();
         settingsPanel = new JPanel();
@@ -64,21 +75,36 @@ public class Menu extends JFrame implements ActionListener {
 
         // Layout manager
         content.setLayout(new BorderLayout());
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
-        mainPanel.setBorder(new TitledBorder("Players"));
+        userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.PAGE_AXIS));
+        userPanel.setBorder(new TitledBorder("Players"));
+        user1.setLayout(new BoxLayout(user1, BoxLayout.PAGE_AXIS));
+        user1.setBorder(new TitledBorder("Player 1"));
+        user2.setLayout(new BoxLayout(user2, BoxLayout.PAGE_AXIS));
+        user2.setBorder(new TitledBorder("Player 2"));
+        theme1.setLayout(new BoxLayout(theme1, BoxLayout.LINE_AXIS));
+        //theme1.setBorder(new TitledBorder("Theme"));
+        theme2.setLayout(new BoxLayout(theme2, BoxLayout.LINE_AXIS));
+        //theme2.setBorder(new TitledBorder("Theme"));
         settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.PAGE_AXIS));
 
         // Components -> Container -> main window
-        mainPanel.add(User1);
-        mainPanel.add(
+        theme1.add(shape1);
+        theme1.add(Box.createRigidArea(new Dimension(5,0)));
+        theme1.add(color1);
+        theme2.add(shape2);
+        theme2.add(Box.createRigidArea(new Dimension(5,0)));
+        theme2.add(color2);
+        user1.add(txtUser1);
+        user1.add(
                 Box.createRigidArea(new Dimension(0,5)));
-        mainPanel.add(txtUser1);
-        mainPanel.add(
-                Box.createRigidArea(new Dimension(0,5)));
-        mainPanel.add(User2);
-        mainPanel.add(
-                Box.createRigidArea(new Dimension(0,5)));
-        mainPanel.add(txtUser2);
+        user1.add(theme1);
+        userPanel.add(user1);
+        userPanel.add(
+                Box.createRigidArea(new Dimension(0,15)));
+        user2.add(txtUser2);
+        user2.add(Box.createRigidArea(new Dimension(0,5)));
+        user2.add(theme2);
+        userPanel.add(user2);
 
         /*
         * Buttonbereich des JFrame einstellen
@@ -130,11 +156,15 @@ public class Menu extends JFrame implements ActionListener {
         settingsPanel.add(buttonPanel);
         
         // Hinzufügen der JPanel zum BorderLayout
-        content.add(mainPanel, BorderLayout.NORTH);
+        content.add(userPanel, BorderLayout.NORTH);
         content.add(radioPanel, BorderLayout.CENTER);
         content.add(settingsPanel, BorderLayout.SOUTH);
 
         // Event handling
+        shape1.addActionListener(this);
+        color1.addActionListener(this);
+        shape2.addActionListener(this);
+        color2.addActionListener(this);
         ng.addActionListener(this);
         lg.addActionListener(this);
 
@@ -150,12 +180,19 @@ public class Menu extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == ng) {
+            //JComboBox cb = (JComboBox)source;
+            String coinShape1 = (String)shape1.getSelectedItem();
+            String coinColor1 = (String)color1.getSelectedItem();
+            String playerOneCoin = coinShape1.toLowerCase() + "_" + coinColor1.toLowerCase();
+            String coinShape2 = (String)shape2.getSelectedItem();
+            String coinColor2 = (String)color2.getSelectedItem();
+            String playerTwoCoin = coinShape2.toLowerCase() + "_" + coinColor2.toLowerCase();
         	int numberOfRows=(int) rowNumberSpinner.getValue();
         	int numberOfCols=(int) colNumberSpinner.getValue();
             String playerOneName=txtUser1.getText();
             String playerTwoName=txtUser2.getText();
-            Player p1 = new Player(playerOneName, (numberOfRows*numberOfCols)/2);
-            Player p2 = new Player(playerTwoName, (numberOfRows*numberOfCols)/2);
+            Player p1 = new Player(playerOneName, playerOneCoin, (numberOfRows*numberOfCols)/2);
+            Player p2 = new Player(playerTwoName, playerTwoCoin, (numberOfRows*numberOfCols)/2);
             try{
                 if(!p1.containsAllowedCharacters()||!p2.containsAllowedCharacters()){
             		throw new PlayerNameException("Players name may only contain letters, "
@@ -192,12 +229,12 @@ public class Menu extends JFrame implements ActionListener {
                 }
             }
             catch(PlayerNameException ex){
-                JOptionPane.showMessageDialog(mainPanel, ex.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(userPanel, ex.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
             } catch (NoGameSelectedException noGame) {
-                JOptionPane.showMessageDialog(mainPanel, noGame.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(userPanel, noGame.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
             }
             catch (ColsRowsException ex) {
-                JOptionPane.showMessageDialog(mainPanel, ex.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(userPanel, ex.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
             }
         }
         if (source == lg) {
@@ -205,7 +242,7 @@ public class Menu extends JFrame implements ActionListener {
         	loadFileChooser.setAcceptAllFileFilterUsed(false);
         	FileNameExtensionFilter filter = new FileNameExtensionFilter("Saved games", "save");
         	loadFileChooser.addChoosableFileFilter(filter);
-    		int returnChooserValue = loadFileChooser.showOpenDialog(mainPanel);
+    		int returnChooserValue = loadFileChooser.showOpenDialog(userPanel);
     		if (returnChooserValue == JFileChooser.APPROVE_OPTION) {
     			File fileToLoad = loadFileChooser.getSelectedFile();
     			try {
@@ -222,9 +259,9 @@ public class Menu extends JFrame implements ActionListener {
                         throw new NoGameSelectedException("No Game Mode selected. Please choose one Game Mode.");
                     }
                 } catch (NoGameSelectedException noGame) {
-                    JOptionPane.showMessageDialog(mainPanel, noGame.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(userPanel, noGame.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception ex){
-                    JOptionPane.showMessageDialog(mainPanel, "Error while loading game! Technical message: "+ex.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(userPanel, "Error while loading game! Technical message: "+ex.getMessage(),  "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
     		}
            

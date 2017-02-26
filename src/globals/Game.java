@@ -32,8 +32,12 @@ public abstract class Game extends JFrame implements ActionListener, Serializabl
     public static JLabel turn;
     public JPanel buttonbox;
     public JPanel gamePanel;
-    public ImageIcon g1 = new ImageIcon(System.getProperty("user.dir")+"/graphics/coins/star_blue.png");
-    public ImageIcon g2 = new ImageIcon(System.getProperty("user.dir")+"/graphics/coins/star_green.png");
+    /*
+    public ImageIcon g1 = new ImageIcon(System.getProperty("user.dir")+"/graphics/coins/"+p1.getCoin()+".png");
+    public ImageIcon g2 = new ImageIcon(System.getProperty("user.dir")+"/graphics/coins/"+p2.getCoin()+".png");
+    */
+    public ImageIcon g1;
+    public ImageIcon g2;
     public int pTurn = 0;
     public Field field;
     public int row, col;
@@ -60,6 +64,8 @@ public abstract class Game extends JFrame implements ActionListener, Serializabl
         this.pTurn = pTurn;
         this.p1 = p1;
         this.p2 = p2;
+        this.g1 = new ImageIcon(System.getProperty("user.dir")+"/graphics/coins/"+p1.getCoin()+".png");
+        this.g2 = new ImageIcon(System.getProperty("user.dir")+"/graphics/coins/"+p2.getCoin()+".png");
         if (btns!=null) {
             buttons = btns;
         }

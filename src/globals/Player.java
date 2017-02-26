@@ -7,10 +7,12 @@ import java.io.Serializable;
  */
 public class Player implements Serializable {
     String name;
+    String coin;
     int coins;
 
-    public Player(String name, int coins) {
+    public Player(String name, String coin, int coins) {
         this.name = name;
+        this.coin = coin;
         this.coins = coins;
     }
 
@@ -26,18 +28,21 @@ public class Player implements Serializable {
         return name;
     }
 
+    public String getCoin() {
+        return coin;
+    }
+
     public int getCoins() {
         return coins;
     }
+
     /**
      * This method is used to check if a capital letter is placed after blank space or hyphen.
      * If it is, it returns true value and if it is not, it returns false value.
      * @author Tiana Dabovic
-     * @param playerName Player name which user inputed
      * @return boolean Method returns boolean value true if capital letter is after all
      * blank spaces and hyphens or false if is not
     */
-    
     public boolean isCapitalLetterAfterSpace(){
     	boolean isCapital=true;
     	for(int i=0;i<name.length()-1;i++){
@@ -62,7 +67,7 @@ public class Player implements Serializable {
     */
     
     public boolean containsAllowedCharacters(){
-    	String allowedCharactersRegex="[A-ZÄÖÜ][A-ZÄÖÜa-zäöüß -]+";
+    	String allowedCharactersRegex="[A-Zï¿½ï¿½ï¿½][A-Zï¿½ï¿½ï¿½a-zï¿½ï¿½ï¿½ï¿½ -]+";
     	if(name.matches(allowedCharactersRegex)) return true;
     	else return false;
     }
