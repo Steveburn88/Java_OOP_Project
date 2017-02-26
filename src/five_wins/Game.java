@@ -1,17 +1,14 @@
 package five_wins;
 
-import globals.Player;
 import globals.Menu;
+import globals.Player;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -26,23 +23,27 @@ import java.util.HashMap;
 * @since   1.1
 */
 
-public class Game extends JFrame implements ActionListener, Serializable {
+public class Game extends globals.Game implements ActionListener, Serializable {
     // Components
-    Player p1, p2;
+    /*Player p1, p2;
     JButton ng = new JButton("New Game");
     static JButton sg;
     static JButton insertBtn;
     JButton quit = new JButton("Exit to Menu");
     static JLabel finishNote;
     static JLabel turn;
+    */
     JSpinner rowNumberSpinner;
     JSpinner colNumberSpinner;
+    /*
     JPanel buttonbox;
     JPanel gamePanel;
     ImageIcon g1 = new ImageIcon(System.getProperty("user.dir")+"/graphics/coins/star_blue.png");
     ImageIcon g2 = new ImageIcon(System.getProperty("user.dir")+"/graphics/coins/star_green.png");
     int pTurn = 0;
+    */
     public Field field;
+    /*
     int row, col;
     int rowTiles;
     int colTiles;
@@ -50,23 +51,26 @@ public class Game extends JFrame implements ActionListener, Serializable {
     GridLayout myGrid;
     static Container content;
     public String loadedFileName="";
+    */
 
     // Constructor with buttons:
     public Game(String title, Player p1, Player p2, int pTurn, JButton[][] btns, int col, int row) {
-        super(title);
+        super(title, p1, p2, pTurn, btns, col, row);
+        /*
         sg=new JButton("Save");
         insertBtn= new JButton("Insert new");
         finishNote = new JLabel();
         turn = new JLabel();
         content=new Container();
+        */
         field = new Field(col, row);
         rowTiles=field.getRow();
         colTiles=field.getColumn();
-        SpinnerNumberModel rowNumberModel = new SpinnerNumberModel(1, 1, field.getRow(), 1);  
+        SpinnerNumberModel rowNumberModel = new SpinnerNumberModel(1, 1, field.getRow(), 1);
         rowNumberSpinner = new JSpinner(rowNumberModel);
-        SpinnerNumberModel colNumberModel = new SpinnerNumberModel(1, 1, field.getColumn(), 1);  
+        SpinnerNumberModel colNumberModel = new SpinnerNumberModel(1, 1, field.getColumn(), 1);
         colNumberSpinner = new JSpinner(colNumberModel);
-        
+        /*
         this.pTurn = pTurn;
         this.p1 = p1;
         this.p2 = p2;
@@ -132,6 +136,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
         setLocation(100, 50);
         setVisible(true);
         setCoinsImageSize(buttons[0][0].getWidth(), buttons[0][0].getHeight());
+        */
     }
 
     // Constructor for a new game:
@@ -140,49 +145,17 @@ public class Game extends JFrame implements ActionListener, Serializable {
     }
 
     /**
-     * This method is used to resize coins images. Images size is set according to
-     * size of a button that represents field of playing board.
+     * This method finds first empty field to insert coin in given column. It sets value of player
+     * to the field and sets icon of appropriate player coin. If row where coin is inserted is making
+     * the column full of coins, first button of column is disabled for click.
      * @author Tiana Dabovic
-     * @param width Width of button that represents field.
-     * @param width Height of button that represents field.
+     * @param colNum Number of column that is clicked.
+     * @param playerNum Number of player whose turn is.
+     * @param img Icon of coin that has to be set on appropriate button where coin is inserted.
      */
-    
-    public void setCoinsImageSize(int width, int height){
-    	if(width>70) width=70;
-    	if(height>70) height=70;
-    	Image newImg1=g1.getImage();
-        newImg1 = newImg1.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
-        g1 = new ImageIcon(newImg1); 
-        Image newImg2=g2.getImage();
-        newImg2 = newImg2.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
-        g2 = new ImageIcon(newImg2);
-    }
-    
-    /**
-    * This method is used to check if number of column in which player wants to insert coin is in
-    * range of possible values. Possible values are from 0 to number of field columns minus 1.
-    * Returns true if inputed number is in allowed range, else returns false
-    * @author Tiana Dabovic, Stefan Schneider
-    * @param colNum Number of column which is checked for range.
-    * @return boolean Returns true if inputed number is in allowed range, else returns false
-    */
-    public boolean isInputInColumnRange(int colNum){
-        if(colNum>=0&&colNum<colTiles) return true;
-        return false;
-    }
-
-    /**
-    * This method finds first empty field to insert coin in given column. It sets value of player
-    * to the field and sets icon of appropriate player coin. If row where coin is inserted is making
-    * the column full of coins, first button of column is disabled for click.
-    * @author Tiana Dabovic
-    * @param colNum Number of column that is clicked.
-    * @param playerNum Number of player whose turn is.
-    * @param img Icon of coin that has to be set on appropriate button where coin is inserted.
-    */
     public void findWhereToInsertCoin(int rowNum, int colNum, int playerNum, ImageIcon img){
-    	if(field.isEmpty(colNum, rowNum)){
-    		field.setCoin(colNum, rowNum, playerNum);
+        if(field.isEmpty(colNum, rowNum)){
+            field.setCoin(colNum, rowNum, playerNum);
             buttons[rowNum][colNum].setIcon(img);
             buttons[rowNum][colNum].setIconTextGap(-10);
             buttons[rowNum][colNum].setDisabledIcon(img);
@@ -196,6 +169,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
     * @author Tiana Dabovic
     * @param scoring Map that contains numbers of rows and columns of win combin.
     */
+    @Override
     public void markWinningStreak(HashMap<String,Object> scoring){
         buttons[(int) scoring.get("row1")][(int) scoring.get("col1")].setBorder(new LineBorder(Color.RED, 5));
         buttons[(int) scoring.get("row2")][(int) scoring.get("col2")].setBorder(new LineBorder(Color.RED, 5));
@@ -204,28 +178,6 @@ public class Game extends JFrame implements ActionListener, Serializable {
         buttons[(int) scoring.get("row5")][(int) scoring.get("col5")].setBorder(new LineBorder(Color.RED, 5));
     }
 
-    /**
-    * This method is used to disable all buttons when game is finished.
-    * @author Tiana Dabovic
-    */
-    public void disableButtons(){
-        for(int rowNum=0;rowNum<field.getRow();rowNum++){
-        	for(int colNum=0;colNum<field.getColumn();colNum++){
-        		buttons[rowNum][colNum].setEnabled(false);
-        	}
-        }
-        insertBtn.setEnabled(false);
-        sg.setEnabled(false);
-    }
-   
-    /**
-    * This method is used to display winners name in south region of frame.
-    * @author Tiana Dabovic
-    */
-    public void setFinishNote(){
-        finishNote.setHorizontalAlignment(SwingConstants.CENTER);
-        content.add(finishNote, BorderLayout.SOUTH);
-    }
     
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -233,8 +185,8 @@ public class Game extends JFrame implements ActionListener, Serializable {
         if (source == ng) {
             // set Coins to Start value
             dispose();
-            //p1.setCoins((field.getColumn()*field.getRow())/2);
-            //p2.setCoins((field.getColumn()*field.getRow())/2);
+            p1.setCoins((field.getColumn()*field.getRow())/2);
+            p2.setCoins((field.getColumn()*field.getRow())/2);
             Game screen = new Game("Four Wins", p1, p2, 0, field.getColumn(), field.getRow());
         }
         else if (source == sg) {
@@ -273,7 +225,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
         	insertPanel.add(new JLabel("Column:"));
         	insertPanel.add(colNumberSpinner);
 
-            int result = JOptionPane.showConfirmDialog(gamePanel, insertPanel, 
+            int result = JOptionPane.showConfirmDialog(gamePanel, insertPanel,
                      "Insert new coin", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
                int numOfRow=(int) rowNumberSpinner.getValue();
@@ -289,93 +241,47 @@ public class Game extends JFrame implements ActionListener, Serializable {
         else for (row = 0; row < rowTiles; row++) {
             for (col = 0; col < colTiles; col++) {
                 if (source == buttons[row][col]) {
-                    insertCoin(row, col);
+                    insertCoin(col, row);
                 }
             }
         }
     }
- 
+
+
     /**
-    * This method is used to insert coin in given column. It sets the value of field to player value
-    * and sets appropriate coin image. It also checks for winning combination and if one is found
-    * game is finished. At the end player turn counter is increased by one, so the next player will
-    * get his turn when next input is made.
-    * @author Tiana Dabovic, Stefan Schneider
-    * @param col Number of column that is clicked or passed by input dialog.
-    */
-    public void insertCoin(int row, int col){
+     * This method is used to insert a coin in given column. It sets the value of the field
+     * to the player value and sets the appropriate coin image. It also checks for winning combination
+     * and if one is found, the game ends. At the end the player turn counter is increased by one,
+     * so the next player will get his turn when next input is made.
+     * @auth Stefan Schneider
+     * @param c Number of given column.
+     * @param r Number of given row
+     */
+    public void insertCoin(int c, int r) {
         if (pTurn % 2 == 0) {
-            findWhereToInsertCoin(row, col, 1, g1);
-            //int n = p1.getCoins();
-            //p1.setCoins(n-1);
-            //coinsStatus.setText("<html>"+p1.getName()+": "+p1.getCoins()+"coins<br>"+p2.getName()+": "+p2.getCoins()+"coins</html>");
-            turn.setText("Current Turn: "+p2.getName());
-        }
-        else if (pTurn % 2 == 1) {
-            findWhereToInsertCoin(row, col, 2, g2);
-            //int n = p2.getCoins();
-            //p2.setCoins(n-1);
-            //coinsStatus.setText("<html>"+p1.getName()+": "+p1.getCoins()+"coins<br>"+p2.getName()+": "+p2.getCoins()+"coins</html>");
-            turn.setText("Current Turn: "+p1.getName());
+            int n = p1.getCoins();
+            p1.setCoins(n - 1);
+            findWhereToInsertCoin(r, c, 1, g1);
+            updateText(p2);
+
+        } else if (pTurn % 2 == 1) {
+            int n = p2.getCoins();
+            p2.setCoins(n - 1);
+            findWhereToInsertCoin(r, c, 2, g2);
+            updateText(p1);
         }
         HashMap<String, Object> scoring=field.checkForWin();
         String noteToShow=scoring.get("note").toString();
         if(noteToShow=="win p1"){
         	win(p1, scoring);
-        }
-        else if(noteToShow=="win p2"){
+        } else if(noteToShow=="win p2"){
         	win(p2, scoring);
-        }
-        else if(field.isBoardFull()){
+        } else if(field.isBoardFull()){
             finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>Draw!</div></html>");
             setFinishNote();
             disableButtons();
         }
-
         pTurn += 1;
     }
 
-    /**
-     * Displays the winner and disable the Button on the Field.
-     * @auth Tiana Dabovic, Stefan Schneider
-     * @param p The Player who wins
-     * @param scoring The Hashmap contains the winning coins
-     */
-    public void win(Player p, HashMap<String, Object> scoring) {
-        finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>"+p.getName()+" wins!</div></html>");
-        setFinishNote();
-        markWinningStreak(scoring);
-        disableButtons();
-    }
-    
-    /**
-     * Creates OutputStream for saving game. If there is file with provided filename, game is
-     * saved to that file.
-     * If not new file is created in folder saves. If error occures it throws ioexception.
-     * @author Tiana Dabovic, Stefan Schneider
-     * @param fileName Name of file where game should be saved.
-     * @throws IOException in case something is wrong in writing objects to file.
-     */
-    
-    public void saveGame(String fileName) throws IOException{
-    	ObjectOutputStream os=null;
-    	try{
-    		os = new ObjectOutputStream(new FileOutputStream("saves/"+fileName));
-    		os.writeObject(p1);
-    		os.writeObject(p2);
-    		os.writeInt(pTurn);
-    		os.writeObject(buttons);
-    		os.writeObject(field);
-    	}
-    	catch(IOException ex){
-    		System.out.println(ex.getMessage());
-    		throw new IOException(ex.getMessage());
-    	}
-    	finally{
-    		if(os!=null){
-    			os.close();
-    		}
-    	}
-    }
-    
 }
