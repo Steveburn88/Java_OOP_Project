@@ -34,7 +34,7 @@ public class Menu extends JFrame implements ActionListener {
     JPanel userPanel;
     JPanel theme1;
     JPanel theme2;
-    String[] shapes = {"Heart", "Star"};
+    String[] shapes = {"Heart", "Hexagon", "Star"};
     String[] colors = {"Black", "Blue", "Green", "Red", "Transparent", "Yellow"};
     JComboBox shape1 = new JComboBox(shapes);
     JComboBox color1 = new JComboBox(colors);
@@ -47,7 +47,11 @@ public class Menu extends JFrame implements ActionListener {
     JSpinner colNumberSpinner;
     ButtonGroup btngroup;
 
-    // Constructor:
+    /**
+     * Constructor
+     * @param title The Title will be seen in the window
+     * @author Tiana Dabovic, Stefan Schneider
+     */
     public Menu(String title) {
         super(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
