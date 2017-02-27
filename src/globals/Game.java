@@ -17,8 +17,8 @@ import java.util.HashMap;
 
 /**
  * Created by stefan on 25.02.17.
+ * An abstract game class, containing the attributes and methods used by all game classes.
  */
-
 public abstract class Game extends JFrame implements ActionListener, Serializable {
     // Components
     public String title;

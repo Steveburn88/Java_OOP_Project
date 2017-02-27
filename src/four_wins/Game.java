@@ -12,12 +12,22 @@ import java.util.HashMap;
 
 /**
  * Created by stefan on 14.01.17.
+ * This class implements the game four wins.
+ * @author Tiana Dabovic, Stefan Schneider
  */
-
 public class Game extends globals.Game implements ActionListener, Serializable {
 
 
-    // Constructor with buttons:
+    /**
+     * Constructor for a saved game. An array of JButton is passed.
+     * @param title The game title.
+     * @param p1 the first player.
+     * @param p2 the second player.
+     * @param pTurn turn counter
+     * @param btns the board with the putted coins.
+     * @param col number of columns on the board.
+     * @param row number of rows on the board.
+     */
     public Game(String title, Player p1, Player p2, int pTurn, JButton[][] btns, int col, int row) {
         super(title, p1, p2, pTurn, btns, col, row);
         for (int r = 0; r < rowTiles; r++) {
@@ -27,11 +37,17 @@ public class Game extends globals.Game implements ActionListener, Serializable {
                 }
             }
         }
-        //setCoinsImageSize(buttons[0][0].getWidth(), buttons[0][0].getHeight());
-
     }
 
-    // Constructor for a new game:
+    /**
+     * Constructor for a new game. No JButton array is passed.
+     * @param title The game title.
+     * @param p1 the first player.
+     * @param p2 the second player.
+     * @param pTurn turn counter
+     * @param col number of columns on the board.
+     * @param row number of rows on the board.
+     */
     public Game(String title, Player p1, Player p2, int pTurn, int col, int row) {
         this(title, p1, p2, pTurn, null, col, row);
     }
@@ -100,6 +116,11 @@ public class Game extends globals.Game implements ActionListener, Serializable {
         pTurn += 1;
     }
 
+    /**
+     * This code is performed every time an ActionEvent is fired.
+     * @param e the ActionEvent
+     * @throws NumberFormatException if column input is not a number.
+     */
     @SuppressWarnings("Duplicates")
     @Override
     public void actionPerformed(ActionEvent e) {

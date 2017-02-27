@@ -19,6 +19,8 @@ import java.io.ObjectInputStream;
 
 /**
  * Created by stefan on 14.01.17.
+ * The Menu class represents the Main Menu and is the first thing the players see,
+ * when starting the program.
  */
 public class Menu extends JFrame implements ActionListener {
     // Components
@@ -180,6 +182,16 @@ public class Menu extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    /**
+     * This code is performed every time an ActionEvent is fired.
+     * @param e the ActionEvent
+     * @throws PlayerNameException if the name does not fit the requirements.
+     * @throws CoinColorException if both players choose the same coin color.
+     * @throws ColsRowsException if both, columns and rows are odd when four wins is selected or
+     *                           if board is not squared when five wins or gobang is selected.
+     * @throws NoGameSelectedException if no game mode is selected.
+     * @author Tiana Dabovic, Stefan Schneider
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -293,7 +305,6 @@ public class Menu extends JFrame implements ActionListener {
      * @throws ClassNotFoundException in case there is no class for provided object.
      * @throws ClassCastException in case trying to cast different types of objects.
      */
-    
     public void loadGame(File fileToLoad, String typeOfGame) throws IOException,FileNotFoundException,ClassNotFoundException,ClassCastException{
     	ObjectInputStream is=null;
     	try{

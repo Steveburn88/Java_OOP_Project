@@ -55,7 +55,16 @@ public class Game extends globals.Game implements ActionListener, Serializable {
     public String loadedFileName="";
     */
 
-    // Constructor with buttons:
+    /**
+     * Constructor for a saved game. An array of JButton is passed.
+     * @param title the game title
+     * @param p1 the first player
+     * @param p2 the second player
+     * @param pTurn turn counter
+     * @param btns the board with the putted coins
+     * @param col number of columns on the board
+     * @param row number of rows on the board
+     */
     public Game(String title, Player p1, Player p2, int pTurn, JButton[][] btns, int col, int row) {
         super(title, p1, p2, pTurn, btns, col, row);
         /*
@@ -141,7 +150,15 @@ public class Game extends globals.Game implements ActionListener, Serializable {
         */
     }
 
-    // Constructor for a new game:
+    /**
+     * Constructor for a new game. No JButton array is passed.
+     * @param title the game title
+     * @param p1 the first player
+     * @param p2 the second player
+     * @param pTurn turn counter
+     * @param col number of columns on the board
+     * @param row number of rows on the board
+     */
     public Game(String title, Player p1, Player p2, int pTurn, int col, int row) {
         this(title, p1, p2, pTurn, null, col, row);
     }
