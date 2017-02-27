@@ -4,18 +4,29 @@ import java.io.Serializable;
 
 /**
  * Created by stefan on 14.01.17.
+ * The Player class represents a player. As far as we concern, a player has a name,
+ * a coin of a certain style and an amount of coins.
  */
 public class Player implements Serializable {
     String name;
     String coin;
     int coins;
 
+    /**
+     * Generic constructor
+     * @param name the player name
+     * @param coin the coin style
+     * @param coins the amount of coins
+     */
     public Player(String name, String coin, int coins) {
         this.name = name;
         this.coin = coin;
         this.coins = coins;
     }
 
+    /**
+     * Setters and Getters
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -65,7 +76,6 @@ public class Player implements Serializable {
      * @return boolean Method returns boolean value true if name contains only allowed characters.
      *  or false if not.
     */
-    
     public boolean containsAllowedCharacters(){
     	String allowedCharactersRegex="[A-Z���][A-Z���a-z���� -]+";
     	if(name.matches(allowedCharactersRegex)) return true;
@@ -78,7 +88,6 @@ public class Player implements Serializable {
      * @param otherName Name of other player
      * @return boolean Method returns boolean value true if names are same, or false if not
     */
-    
     public boolean areNamesSame(String otherName){
     	if(name.equals(otherName)) return true;
     	else return false;

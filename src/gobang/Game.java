@@ -127,9 +127,9 @@ public class Game extends five_wins.Game implements ActionListener, Serializable
         }
         HashMap<String, Object> scoring = field.checkForWin();
         String noteToShow = scoring.get("note").toString();
-        if (noteToShow == "win p1") {
+        if (noteToShow.equals("win p1")) {
             win(p1, scoring);
-        } else if (noteToShow == "win p2") {
+        } else if (noteToShow.equals("win p2")) {
             win(p2, scoring);
         } else if (p1.getCoins() == 0 && p2.getCoins() == 0) {
             finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>Draw!</div></html>");
@@ -167,7 +167,7 @@ public class Game extends five_wins.Game implements ActionListener, Serializable
             dispose();
             p1.setCoins((field.getColumn() * field.getRow()) / 2);
             p2.setCoins((field.getColumn() * field.getRow()) / 2);
-            Game screen = new Game("Gobang", p1, p2, 0, field.getColumn(), field.getRow());
+            new Game("Gobang", p1, p2, 0, field.getColumn(), field.getRow());
         } else if (source == sg) {
             String currentTime = Long.toString(System.currentTimeMillis());
             String fileName = title + "_" + currentTime + ".save";
@@ -184,11 +184,7 @@ public class Game extends five_wins.Game implements ActionListener, Serializable
                 JOptionPane savePane = new JOptionPane(saveMsg, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, sgIcon, new Object[]{});
                 final JDialog saveDialog = savePane.createDialog(gamePanel, fileName);
                 saveDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-                Timer timer = new Timer(3000, new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        saveDialog.dispose();
-                    }
-                });
+                Timer timer = new Timer(3000, e1 -> saveDialog.dispose());
                 timer.start();
                 saveDialog.setVisible(true);
             } catch (IOException ex) {
@@ -196,7 +192,7 @@ public class Game extends five_wins.Game implements ActionListener, Serializable
             }
         } else if (source == quit) {
             dispose();
-            Menu main = new Menu("Main Menu");
+            new Menu("Main Menu");
         } else for (row = 0; row < rowTiles; row++) {
             for (col = 0; col < colTiles; col++) {
                 if (source == buttons[row][col]) {

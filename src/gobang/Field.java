@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 /**
  * Created by stefan on 07.02.17.
+ * The Field class contains the number of columns and rows of a game and which positions
+ * are already used by which player.
  */
 public class Field implements Serializable {
     int row;
@@ -50,6 +52,7 @@ public class Field implements Serializable {
     /**
      * This method checks, if the last placed coin beats two opponent coins. If so, a HashMap with the according
      * positions is returned. The HashMap is empty otherwise.
+     * @author Stefan Schneider
      * @param colSelected The column of the placed coin.
      * @param rowSelected The row of the placed coin.
      * @return A HashMap containing the positions of the coins to take away.
@@ -73,7 +76,6 @@ public class Field implements Serializable {
 
         // horizontel check to right
         else if (colSelected<column-3 && field[colSelected+3][rowSelected]==p && field[colSelected+2][rowSelected]==q && field[colSelected+1][rowSelected]==q) {
-            System.out.println("SHOULD NOT APPEAR");
             result.put("row1", rowSelected);
             result.put("row2", rowSelected);
             result.put("col1", colSelected+2);

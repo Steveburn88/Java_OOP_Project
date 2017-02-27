@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 /**
  * Created by stefan on 14.01.17.
+ * The Field class contains the number of columns and rows of a game and which positions
+ * are already used by which player.
  */
 public class Field implements Serializable {
     final int column;
@@ -29,9 +31,10 @@ public class Field implements Serializable {
     	field = new int[column][row];
     }
 
-	/**
+	/**{
 	 * This method checks if a given position of the field is empty. The field is a 2dimensional array
 	 * and empty means, the position has the value 0.
+	 * @author Stefan Schneider
 	 * @param c The column to check
 	 * @param r The row to check
      * @return boolean Method returns true, if position is empty.
