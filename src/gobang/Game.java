@@ -255,7 +255,7 @@ public class Game extends five_wins.Game implements ActionListener, Serializable
             }
         } else if (source == quit) {
             dispose();
-            Menu main = new Menu("Hauptmenü");
+            Menu main = new Menu("Main Menu");
         } else for (row = 0; row < rowTiles; row++) {
             for (col = 0; col < colTiles; col++) {
                 if (source == buttons[row][col]) {

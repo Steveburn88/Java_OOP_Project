@@ -220,7 +220,7 @@ public class Game extends globals.Game implements ActionListener, Serializable {
         }
         else if (source == quit) {
             dispose();
-            Menu main = new Menu("Hauptmenü");
+            Menu main = new Menu("Main Menu");
         }
         else if (source == insertBtn) {
         	JPanel insertPanel = new JPanel();

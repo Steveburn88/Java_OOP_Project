@@ -146,7 +146,7 @@ public class Game extends globals.Game implements ActionListener, Serializable {
         }
         else if (source == quit) {
             dispose();
-            Menu main = new Menu("Hauptmenü");
+            Menu main = new Menu("Main Menu");
         }
         else if (source == insertBtn) {
             String colNumberInput= (String) JOptionPane.showInputDialog(gamePanel, "Please enter the number of column where you want to put your coin.",  "Coin input", JOptionPane.INFORMATION_MESSAGE);
