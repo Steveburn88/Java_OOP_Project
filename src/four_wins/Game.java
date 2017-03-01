@@ -101,10 +101,10 @@ public class Game extends globals.Game implements ActionListener, Serializable {
         }
         HashMap<String, Object> scoring=field.checkForWin();
         String noteToShow=scoring.get("note").toString();
-        if(noteToShow=="win p1") {
+        if(noteToShow.equals("win p1")) {
             win(p1, scoring);
         }
-        else if(noteToShow=="win p2") {
+        else if(noteToShow.equals("win p2")) {
             win(p2, scoring);
         }
         else if(p1.getCoins()==0 && p2.getCoins()==0) {
@@ -124,6 +124,7 @@ public class Game extends globals.Game implements ActionListener, Serializable {
     @SuppressWarnings("Duplicates")
     @Override
     public void actionPerformed(ActionEvent e) {
+    	 
         Object source = e.getSource();
         if (source == ng) {
             // set Coins to Start value
@@ -131,11 +132,11 @@ public class Game extends globals.Game implements ActionListener, Serializable {
             p1.setCoins((field.getColumn()*field.getRow())/2);
             p2.setCoins((field.getColumn()*field.getRow())/2);
             if (title.equals("Four Wins")) {
-                four_wins.Game screen = new four_wins.Game(title, p1, p2, 0, field.getColumn(), field.getRow());
+               new four_wins.Game(title, p1, p2, 0, field.getColumn(), field.getRow());
             } else if (title.equals("Five Wins")) {
-                five_wins.Game screen = new five_wins.Game(title, p1, p2, 0, field.getColumn(), field.getRow());
+                 new five_wins.Game(title, p1, p2, 0, field.getColumn(), field.getRow());
             }else if (title.equals("Gobang")) {
-                gobang.Game screen = new gobang.Game(title, p1, p2, 0, field.getColumn(), field.getRow());
+               new gobang.Game(title, p1, p2, 0, field.getColumn(), field.getRow());
             }
         }
         else if (source == sg) {
@@ -152,12 +153,13 @@ public class Game extends globals.Game implements ActionListener, Serializable {
                 ImageIcon sgIcon = new ImageIcon(System.getProperty("user.dir") + "/graphics/saveIcon.png");
                 String saveMsg = "Succesfully saved to " + fileName + " file!";
                 JOptionPane savePane = new JOptionPane(saveMsg, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, sgIcon, new Object[]{});
+                //kad se jednom kreira da se ne mjenja
                 final JDialog saveDialog = savePane.createDialog(gamePanel, fileName);
                 saveDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
                 Timer timer = new Timer(3000, new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         saveDialog.dispose();
-                    }
+                     }
                 });
                 timer.start();
                 saveDialog.setVisible(true);
@@ -166,24 +168,27 @@ public class Game extends globals.Game implements ActionListener, Serializable {
             }
         }
         else if (source == quit) {
+        	
             dispose();
-            Menu main = new Menu("Main Menu");
+            new Menu("Main Menu");
         }
         else if (source == insertBtn) {
-            String colNumberInput= (String) JOptionPane.showInputDialog(gamePanel, "Please enter the number of column where you want to put your coin.",  "Coin input", JOptionPane.INFORMATION_MESSAGE);
-            try{
-                int colNumber= Integer.parseInt(colNumberInput)-1;
-                if(isInputInColumnRange(colNumber)&&!field.isColumnFull(colNumber)){
-                    insertCoin(colNumber);
-                }
-                else{
-                    JOptionPane.showMessageDialog(gamePanel, "Number must be in range 1-"+Integer.toString(field.getColumn())
-                            +", or column is already full and you should pick another column!", "Warning", JOptionPane.WARNING_MESSAGE);
-                }
-            }
-            catch(NumberFormatException ex){
-                JOptionPane.showMessageDialog(gamePanel, "Input is not a number!", "Warning", JOptionPane.WARNING_MESSAGE);
-            }
+            String colNumberInput=  JOptionPane.showInputDialog(gamePanel, "Please enter the number of column where you want to put your coin.",  "Coin input", JOptionPane.INFORMATION_MESSAGE);
+           if (colNumberInput != null ){
+        	   try{ 
+         			int colNumber= Integer.parseInt(colNumberInput)-1;
+         			if(isInputInColumnRange(colNumber)&&!field.isColumnFull(colNumber)){
+         				insertCoin(colNumber);
+         			}
+         			else{
+                     JOptionPane.showMessageDialog(gamePanel, "Number must be in range 1-"+Integer.toString(field.getColumn())
+                     +", or column is already full and you should pick another column!", "Warning", JOptionPane.WARNING_MESSAGE);        
+         			}
+        	   	}
+        	   catch(NumberFormatException ex){
+        		   	JOptionPane.showMessageDialog(gamePanel, "Input is not a number!", "Warning", JOptionPane.WARNING_MESSAGE);
+        	   }
+           	}
         }
         else for (row = 0; row < rowTiles; row++) {
                 for (col = 0; col < colTiles; col++) {

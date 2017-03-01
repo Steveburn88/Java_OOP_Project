@@ -14,9 +14,13 @@ import java.util.HashMap;
 */
 
 public class Field implements Serializable {
+	
     final int column;
     final int row;
+    
+    
     /**
+     * move values and
      * Integer array representation of the field.
      * 0 means empty, 1 and 2 are dedicated to the according player.
      */
@@ -30,11 +34,16 @@ public class Field implements Serializable {
         return column;
     }
 
-    public Field(int column, int row) {
-    	this.column=column;
+    
+    public Field(int column, int row)
+    {
     	this.row=row;
-    	field = new int[column][row];
+    	this.column=column;
+    	field=new int[column][row];
+    	
     }
+    
+     
 
 	/**
 	 * This method checks if a given position of the field is empty. The field is a 2dimensional array
@@ -43,27 +52,31 @@ public class Field implements Serializable {
 	 * @param r The row to check
      * @return boolean Method returns true, if position is empty.
      */
-    
-    public boolean isEmpty(int c, int r) {
-        if (field[c][r] == 0) return true;
-        else return false;
+    public boolean isEmpty(int c, int r)
+    {
+    	if(field[c][r]==0) return true;
+    	else return false;
     }
     
+    
+     
     /**
 	 * This method checks if board is full of coins.
      * @return boolean Method returns true, if board is full. Else returns false.
-     */
+      */
     
     public boolean isBoardFull(){
     	boolean isFull=true;
+    	
+    	isboardfullloop:
     	for(int r=0; r<row; r++){
     		for (int c=0; c<column; c++){	
     			if(isEmpty(c,r)){
     				isFull=false;
-    				break;
+    				break isboardfullloop;	
     			}
     		}
-    	}
+    	} 
     	return isFull;
     }
     

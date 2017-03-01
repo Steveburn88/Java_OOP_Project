@@ -36,12 +36,13 @@ public class Menu extends JFrame implements ActionListener {
     JPanel userPanel;
     JPanel theme1;
     JPanel theme2;
-    String[] shapes = {"Heart", "Hexagon", "Star"};
-    String[] colors = {"Black", "Blue", "Green", "Red", "Transparent", "Yellow"};
+    String[] shapes = { "Star", "Hexagon", "Heart"};
+    String[] colors1 = {"Blue", "Green", "Black", "Red", "White", "Yellow"};
+    String[] colors2 = {"Green", "Blue", "Black", "Red", "White", "Yellow"};
     JComboBox shape1 = new JComboBox(shapes);
-    JComboBox color1 = new JComboBox(colors);
+    JComboBox color1 = new JComboBox(colors1);
     JComboBox shape2 = new JComboBox(shapes);
-    JComboBox color2 = new JComboBox(colors);
+    JComboBox color2 = new JComboBox(colors2);
     JPanel radioPanel;
     JPanel buttonPanel;
     JPanel settingsPanel;
@@ -230,19 +231,19 @@ public class Menu extends JFrame implements ActionListener {
                 		throw new ColsRowsException("Product of number of rows and columns must be even!");
                 	}
                     this.dispose();
-                    Game fourwins = new Game("Four Wins", p1, p2, pTurn, numberOfCols, numberOfRows);
+                    new Game("Four Wins", p1, p2, pTurn, numberOfCols, numberOfRows);
                 } else if (fiveWinsRBtn.isSelected()) {
                 	if(numberOfCols!=numberOfRows){
                 		throw new ColsRowsException("Playing board must be square!");
                 	}
                     this.dispose();
-                    five_wins.Game fivewins = new five_wins.Game("Five Wins", p1, p2, pTurn, numberOfCols, numberOfRows);
+                   new five_wins.Game("Five Wins", p1, p2, pTurn, numberOfCols, numberOfRows);
                 } else if (gobangRBtn.isSelected()) {
                 	if(numberOfCols!=numberOfRows){
                 		throw new ColsRowsException("Playing board must be square!");
                 	}
                     this.dispose();
-                    gobang.Game gobang = new gobang.Game("Gobang", p1, p2, pTurn, numberOfCols, numberOfRows);
+                   new gobang.Game("Gobang", p1, p2, pTurn, numberOfCols, numberOfRows);
                 } else {
                     throw new NoGameSelectedException("No Game Mode selected. Please choose one Game Mode.");
                 }

@@ -108,6 +108,7 @@ public class Field implements Serializable {
      * columns of winning combination and note which determine which player created winning comb.
     */
     public HashMap<String, Object> checkForWin(){
+    	
     	String winningNote="";
     	HashMap<String, Object> mapToReturn = new HashMap<String, Object>();
     	//horizontal checking

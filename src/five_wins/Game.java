@@ -1,8 +1,6 @@
-package five_wins;
-
+package five_wins;  
 import globals.Menu;
-import globals.Player;
-
+import globals.Player; 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -26,34 +24,11 @@ import java.util.HashMap;
 */
 
 public class Game extends globals.Game implements ActionListener, Serializable {
-    // Components
-    /*Player p1, p2;
-    JButton ng = new JButton("New Game");
-    static JButton sg;
-    static JButton insertBtn;
-    JButton quit = new JButton("Exit to Menu");
-    static JLabel finishNote;
-    static JLabel turn;
-    */
+    
     JSpinner rowNumberSpinner;
     JSpinner colNumberSpinner;
-    /*
-    JPanel buttonbox;
-    JPanel gamePanel;
-    ImageIcon g1 = new ImageIcon(System.getProperty("user.dir")+"/graphics/coins/star_blue.png");
-    ImageIcon g2 = new ImageIcon(System.getProperty("user.dir")+"/graphics/coins/star_green.png");
-    int pTurn = 0;
-    */
     public Field field;
-    /*
-    int row, col;
-    int rowTiles;
-    int colTiles;
-    JButton[][] buttons;
-    GridLayout myGrid;
-    static Container content;
-    public String loadedFileName="";
-    */
+    
 
     /**
      * Constructor for a saved game. An array of JButton is passed.
@@ -67,87 +42,17 @@ public class Game extends globals.Game implements ActionListener, Serializable {
      */
     public Game(String title, Player p1, Player p2, int pTurn, JButton[][] btns, int col, int row) {
         super(title, p1, p2, pTurn, btns, col, row);
-        /*
-        sg=new JButton("Save");
-        insertBtn= new JButton("Insert new");
-        finishNote = new JLabel();
-        turn = new JLabel();
-        content=new Container();
-        */
+        
         field = new Field(col, row);
         rowTiles=field.getRow();
         colTiles=field.getColumn();
+        
         SpinnerNumberModel rowNumberModel = new SpinnerNumberModel(1, 1, field.getRow(), 1);
         rowNumberSpinner = new JSpinner(rowNumberModel);
         SpinnerNumberModel colNumberModel = new SpinnerNumberModel(1, 1, field.getColumn(), 1);
         colNumberSpinner = new JSpinner(colNumberModel);
-        /*
-        this.pTurn = pTurn;
-        this.p1 = p1;
-        this.p2 = p2;
-        if (btns!=null) {
-            buttons = btns;
-        }
-        else{
-        	buttons = new JButton[rowTiles][colTiles];
-        }
-        myGrid = new GridLayout(rowTiles, colTiles);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gamePanel = new JPanel();
-        gamePanel.setLayout(myGrid);
-
-        // Component Attributes
-        ng.setToolTipText("Start a new Game");
-        if (pTurn % 2 == 0) turn.setText("Current Turn: "+p1.getName());
-        if (pTurn % 2 == 1) turn.setText("Current Turn: "+p2.getName());
-
-        // Containers
-        buttonbox = new JPanel();
-        content = getContentPane();
-
-        // Layout manager
-        content.setLayout(new BorderLayout());
-        buttonbox.setLayout(new FlowLayout());
-
-        // Components -> Container -> main window
-        buttonbox.add(ng);
-        buttonbox.add(sg);
-        buttonbox.add(quit);
-        for (row = 0; row < rowTiles; row++) {
-            for (col = 0; col < colTiles; col++) {
-                if (btns==null) {
-                    buttons[row][col] = new JButton();
-                    buttons[row][col].setBackground(Color.WHITE);
-                    buttons[row][col].addActionListener(this);
-                }
-                gamePanel.add(buttons[row][col]);
-            }
-        }
-
-        JPanel pan=new JPanel();
-        pan.setLayout(new BoxLayout(pan, BoxLayout.Y_AXIS));
-        pan.setBorder(new TitledBorder("Coins"));
-        pan.add(insertBtn);
-        //with this we enable to hit button insert coin with enter
-        getRootPane().setDefaultButton(insertBtn);
-        content.add(pan, BorderLayout.EAST);
-        content.add(gamePanel, BorderLayout.CENTER);
-        content.add(buttonbox, BorderLayout.NORTH);
-        content.add(turn, BorderLayout.SOUTH);
-
-        // Event handling
-        ng.addActionListener(this);
-        sg.addActionListener(this);
-        quit.addActionListener(this);
-        insertBtn.addActionListener(this);
-
-        // display main window
-       // pack();
-        setSize(720, 576);
-        setLocation(100, 50);
-        setVisible(true);
-        setCoinsImageSize(buttons[0][0].getWidth(), buttons[0][0].getHeight());
-        */
+        pan.remove(coinsStatus);
+         
     }
 
     /**
@@ -206,7 +111,7 @@ public class Game extends globals.Game implements ActionListener, Serializable {
             dispose();
             p1.setCoins((field.getColumn()*field.getRow())/2);
             p2.setCoins((field.getColumn()*field.getRow())/2);
-            Game screen = new Game("Four Wins", p1, p2, 0, field.getColumn(), field.getRow());
+            new Game("Five Wins", p1, p2, 0, field.getColumn(), field.getRow());
         }
         else if (source == sg) {
         	String currentTime=Long.toString(System.currentTimeMillis());
@@ -294,9 +199,9 @@ public class Game extends globals.Game implements ActionListener, Serializable {
         }
         HashMap<String, Object> scoring=field.checkForWin();
         String noteToShow=scoring.get("note").toString();
-        if(noteToShow=="win p1"){
+        if(noteToShow.equals("win p1")){
         	win(p1, scoring);
-        } else if(noteToShow=="win p2"){
+        } else if(noteToShow.equals("win p2")){
         	win(p2, scoring);
         } else if(field.isBoardFull()){
             finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>Draw!</div></html>");
