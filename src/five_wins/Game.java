@@ -51,7 +51,7 @@ public class Game extends globals.Game implements ActionListener, Serializable {
         rowNumberSpinner = new JSpinner(rowNumberModel);
         SpinnerNumberModel colNumberModel = new SpinnerNumberModel(1, 1, field.getColumn(), 1);
         colNumberSpinner = new JSpinner(colNumberModel);
-        pan.remove(coinsStatus);
+        //pan.remove(coinsStatus);
          
     }
 

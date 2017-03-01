@@ -108,7 +108,7 @@ public abstract class Game extends JFrame implements ActionListener, Serializabl
             }
         }
 
-         pan = new JPanel();
+        pan = new JPanel();
         pan.setLayout(new BoxLayout(pan, BoxLayout.Y_AXIS));
         pan.setBorder(new TitledBorder("Coins"));
         pan.add(insertBtn);
@@ -148,9 +148,7 @@ public abstract class Game extends JFrame implements ActionListener, Serializabl
      */
 
     public void setCoinsImageSize(int width, int height){
-    
-      if(width>70) width=70;
-        
+        if(width>70) width=70;
         if(height>70) height=70;
         Image newImg1 = g1.getImage();
         newImg1 = newImg1.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
@@ -259,7 +257,7 @@ public abstract class Game extends JFrame implements ActionListener, Serializabl
      */
     @SuppressWarnings("Duplicates")
     public void saveGame(String fileName) throws IOException{
-      ObjectOutputStream os=null;
+        ObjectOutputStream os=null;
         try{
             os = new ObjectOutputStream(new FileOutputStream("saves/"+fileName));
             os.writeObject(p1);
@@ -267,7 +265,6 @@ public abstract class Game extends JFrame implements ActionListener, Serializabl
             os.writeInt(pTurn);
             os.writeObject(buttons);
             os.writeObject(field);
-
         }
         catch(IOException ex){
             System.out.println(ex.getMessage());

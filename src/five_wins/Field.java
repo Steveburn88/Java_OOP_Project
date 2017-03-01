@@ -20,7 +20,6 @@ public class Field implements Serializable {
     
     
     /**
-     * move values and
      * Integer array representation of the field.
      * 0 means empty, 1 and 2 are dedicated to the according player.
      */
@@ -42,8 +41,6 @@ public class Field implements Serializable {
     	field=new int[column][row];
     	
     }
-    
-     
 
 	/**
 	 * This method checks if a given position of the field is empty. The field is a 2dimensional array
@@ -57,8 +54,6 @@ public class Field implements Serializable {
     	if(field[c][r]==0) return true;
     	else return false;
     }
-    
-    
      
     /**
 	 * This method checks if board is full of coins.

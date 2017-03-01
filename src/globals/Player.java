@@ -77,7 +77,8 @@ public class Player implements Serializable {
      *  or false if not.
     */
     public boolean containsAllowedCharacters(){
-    	String allowedCharactersRegex="[A-ZÄÖÜ][A-ZÄÖÜäöüß -]+";
+    	String allowedCharactersRegex="[A-ZÃ„Ã–Ãœ][A-Za-zÃ„Ã–ÃœÃ¤Ã¶Ã¼ÃŸ -]+";
+        //String allowedCharactersRegex="[A-Z][A-Za-z -]+";
     	if(name.matches(allowedCharactersRegex)) return true;
     	else return false;
     }
