@@ -184,6 +184,7 @@ public class Game extends globals.Game implements ActionListener, Serializable {
      * @param c Number of given column.
      * @param r Number of given row
      */
+    @SuppressWarnings("Duplicates")
     public void insertCoin(int c, int r) {
         if (pTurn % 2 == 0) {
             int n = p1.getCoins();
@@ -203,7 +204,7 @@ public class Game extends globals.Game implements ActionListener, Serializable {
         	win(p1, scoring);
         } else if(noteToShow.equals("win p2")){
         	win(p2, scoring);
-        } else if(field.isBoardFull()){
+        } else if (p1.getCoins() == 0 && p2.getCoins() == 0) {
             finishNote.setText("<html><div style='font-size:12px;color:red;font-style:italic;'>Draw!</div></html>");
             setFinishNote();
             disableButtons();
